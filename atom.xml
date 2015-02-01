@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-02-01T06:38:25.418Z</updated>
+  <updated>2015-02-01T06:44:48.579Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -13,48 +13,6 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
-  
-  <entry>
-    <title><![CDATA[]]></title>
-    <link href="http://yoursite.com/2015/02/01/2014-03-25-my-first-octopress/"/>
-    <id>http://yoursite.com/2015/02/01/2014-03-25-my-first-octopress/</id>
-    <published>2015-02-01T06:31:45.000Z</published>
-    <updated>2015-02-01T06:31:45.000Z</updated>
-    <content type="html"><![CDATA[<hr>
-<p>layout: post<br>title: “如何搭建一个octopress博客”<br>date: 2014-03-25 21:06:54 +0800<br>comments: true</p>
-<h1 id="如何搭建一个octopress博客">如何搭建一个octopress博客</h1>
-<h2 id="为什么要搭建octopress博客？">为什么要搭建octopress博客？</h2>
-<p>最近半年，觉着自己没有什么进步，虽然每天做了很多的工作，但是几乎没有什么积累，究其原因，在于没有记录，没有总结，遂萌发了搭建一个自己博客的念头，看了网友一个朋友的文章<a href="http://yang3wei.github.io/blog/2013/01/03/zhuan-zai-wo-wei-shi-yao-yao-cong-wordpress-zhuan-dao-octopress/" target="_blank" rel="external">“我为什么要从wordpress转到octopress</a>，行了，就是它了，开始搭建了。</p>
-<h2 id="遇到的问题">遇到的问题</h2>
-<p>网络上的octopress搭建教程多如牛毛，貌似都很简单，但是我却遇到了很多的问题，总结出一个规律，不看什么教程，直接去octopress看引导是最保险的。</p>
-<h3 id="先来记录下一些基本的知识点">先来记录下一些基本的知识点</h3>
-<ul>
-<li>Ruby：octopress框架的实现语言。rvm（ruby version manager）是用于管理ruby版本的，rake是ruby中类似于make工具。</li>
-<li>静态站点生成工具：简单地说，不用数据库，直接生成网页文件。Jekyll就是这样的工具，而octopress是构建于它的上层的框架。</li>
-<li>Git：我主观的认为完虐svn的分布式版本控制工具。</li>
-<li>Github：程序员的Facebook,为程序员托管了很多代码的站点。</li>
-<li>Github pages:github推出的，给与程序员自由创造静态网页的功能。支持Jekyll，因此也支持octopress。</li>
-<li>homebrew：mac os下的软件包管理工具，类似于linux下的dpkg。它使用ruby脚本，mac os下自带了ruby。</li>
-<li>octopress 其官网的help中有搭建octopress的足够的权威指导</li>
-<li>YAML: YAML 试图用一种比 XML 更敏捷的方式，来完成 XML 所完成的任务。在octopress中，是使用yaml做配置文件的书写的</li>
-</ul>
-<hr>
-<h4 id="依赖库">依赖库</h4>
-<ul>
-<li>homebrew 之前一直使用macport，homebrew比macport更为方便</li>
-<li>gcc mac中去掉了，需要使用homebrew独自安装 </li>
-<li>command line 也需要独立安装 xcode-select —install<br>这些都必须在安装octopress之前安装好</li>
-</ul>
-<h5 id="安装Ruby">安装Ruby</h5>
-<p>有两个Ruby管理工具，Rvm和Rbenv，两个都行，octopress上安装指南<br><a href="http://octopress.org/docs/setup/rvm/" target="_blank" rel="external">“Rvm install guide”</a><br><a href="http://octopress.org/docs/setup/rbenv/" target="_blank" rel="external">“Rbenv install guide”</a></p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<hr>
-<p>layout: post<br>title: “如何搭建一个octopress博客”<br>date: 2014-03-25 21:06:54 +0800<br>comments: true</p>
-<h1 id="如何搭建一个octopress博客">如何搭建一]]>
-    </summary>
-    
-  </entry>
   
   <entry>
     <title><![CDATA[Hello World]]></title>
@@ -198,33 +156,6 @@
     <summary type="html">
     <![CDATA[<h2 id="前言">前言</h2>
 <p>在第三方程序中，通过Facebook登录可以使用Facebook账号，获取权限，例如读取用户图片，读取用户好友列表等，完成自己的功能。Facebook的文档是我见过的最详尽最有条理的文档，想起之前使用新浪微博的sdk，只能呵呵了。Fa]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Android studio 试用笔记一]]></title>
-    <link href="http://yoursite.com/2014/03/31/2014-03-31-android-studio-shi-yong-bi-ji-%5B?%5D/"/>
-    <id>http://yoursite.com/2014/03/31/2014-03-31-android-studio-shi-yong-bi-ji-[?]/</id>
-    <published>2014-03-31T13:18:07.000Z</published>
-    <updated>2015-02-01T06:31:45.000Z</updated>
-    <content type="html"><![CDATA[<p>早就知道了Android studio，只是工作太忙，没有时间去使用，但是心里一直痒痒的，一定要试试这个IDE，马上开始啦。</p>
-<h2 id="概念">概念</h2>
-<ul>
-<li>Moudle<br>modle和eclipse下的project一样的概念，<strong>在Android studio中，新建一个project类似于在eclipse下新建一个workspace，而创建一个module类似于在eclipse下创建一个project</strong></li>
-<li>创建工程的时候，会卡在“Gradle：Download <a href="http://\*marven.org\*”等内容，这个没办法，studio会自动的去下载Gradle软件，我等了一个多小时才下载完毕。" target="_blank" rel="external">http://\*marven.org\*”等内容，这个没办法，studio会自动的去下载Gradle软件，我等了一个多小时才下载完毕。</a></li>
-</ul>
-<h3 id="快捷键">快捷键</h3>
-<ul>
-<li>自动补全</li>
-<li></li>
-</ul>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>早就知道了Android studio，只是工作太忙，没有时间去使用，但是心里一直痒痒的，一定要试试这个IDE，马上开始啦。</p>
-<h2 id="概念">概念</h2>
-<ul>
-<li>Moudle<br>modle和eclipse下的project一样的概念，<st]]>
     </summary>
     
   </entry>
@@ -515,19 +446,6 @@
     <![CDATA[<h2 id="问题描述">问题描述</h2>
 <p>Fragment A嵌套Fragment B，在Fragment B中启动其他的Activity</p>
 <pre><code>     <span class="function">getActivity</span>()<]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[title]]></title>
-    <link href="http://yoursite.com/2014/03/25/2014-03-25-title/"/>
-    <id>http://yoursite.com/2014/03/25/2014-03-25-title/</id>
-    <published>2014-03-25T07:02:28.000Z</published>
-    <updated>2015-02-01T06:31:45.000Z</updated>
-    <content type="html"><![CDATA[]]></content>
-    <summary type="html">
-    <![CDATA[]]>
     </summary>
     
   </entry>
