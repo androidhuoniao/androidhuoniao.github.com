@@ -4,12 +4,15 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | idealGrass</title>
+    <title>idealGrass</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="grass">
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
+    <meta name="description" content="layout: posttitle: “如何搭建一个octopress博客”date: 2014-03-25 21:06:54 +0800comments: true
+如何搭建一个octopress博客
+为什么要搭建octopress博客？
+最近半年，觉着自己没有什么进步，虽然每天做了很多的工作，但">
     
     
     
@@ -70,15 +73,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/02/01/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2015/02/01/2014-03-25-my-first-octopress/" title="" itemprop="url"></a>
   </h1>
   <p class="article-author">By
     
       <a href="http://yoursite.com" title="grass">grass</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-02-01T05:14:02.000Z" itemprop="datePublished">2月 1 2015</time>
-    Updated:<time datetime="2015-02-01T05:14:02.000Z" itemprop="dateModified">2月 1 2015</time>
+    <time datetime="2015-02-01T06:31:45.000Z" itemprop="datePublished">2月 1 2015</time>
+    Updated:<time datetime="2015-02-01T06:31:45.000Z" itemprop="dateModified">2月 1 2015</time>
     
   </p>
 </header>
@@ -87,27 +90,36 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#如何搭建一个octopress博客"><span class="toc-number">1.</span> <span class="toc-text">如何搭建一个octopress博客</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要搭建octopress博客？"><span class="toc-number">1.1.</span> <span class="toc-text">为什么要搭建octopress博客？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#遇到的问题"><span class="toc-number">1.2.</span> <span class="toc-text">遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#先来记录下一些基本的知识点"><span class="toc-number">1.2.1.</span> <span class="toc-text">先来记录下一些基本的知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖库"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">依赖库</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#安装Ruby"><span class="toc-number">1.2.1.1.1.</span> <span class="toc-text">安装Ruby</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
 		</div>
 		
-		<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+		<hr>
+<p>layout: post<br>title: “如何搭建一个octopress博客”<br>date: 2014-03-25 21:06:54 +0800<br>comments: true</p>
+<h1 id="如何搭建一个octopress博客">如何搭建一个octopress博客</h1>
+<h2 id="为什么要搭建octopress博客？">为什么要搭建octopress博客？</h2>
+<p>最近半年，觉着自己没有什么进步，虽然每天做了很多的工作，但是几乎没有什么积累，究其原因，在于没有记录，没有总结，遂萌发了搭建一个自己博客的念头，看了网友一个朋友的文章<a href="http://yang3wei.github.io/blog/2013/01/03/zhuan-zai-wo-wei-shi-yao-yao-cong-wordpress-zhuan-dao-octopress/" target="_blank" rel="external">“我为什么要从wordpress转到octopress</a>，行了，就是它了，开始搭建了。</p>
+<h2 id="遇到的问题">遇到的问题</h2>
+<p>网络上的octopress搭建教程多如牛毛，貌似都很简单，但是我却遇到了很多的问题，总结出一个规律，不看什么教程，直接去octopress看引导是最保险的。</p>
+<h3 id="先来记录下一些基本的知识点">先来记录下一些基本的知识点</h3>
+<ul>
+<li>Ruby：octopress框架的实现语言。rvm（ruby version manager）是用于管理ruby版本的，rake是ruby中类似于make工具。</li>
+<li>静态站点生成工具：简单地说，不用数据库，直接生成网页文件。Jekyll就是这样的工具，而octopress是构建于它的上层的框架。</li>
+<li>Git：我主观的认为完虐svn的分布式版本控制工具。</li>
+<li>Github：程序员的Facebook,为程序员托管了很多代码的站点。</li>
+<li>Github pages:github推出的，给与程序员自由创造静态网页的功能。支持Jekyll，因此也支持octopress。</li>
+<li>homebrew：mac os下的软件包管理工具，类似于linux下的dpkg。它使用ruby脚本，mac os下自带了ruby。</li>
+<li>octopress 其官网的help中有搭建octopress的足够的权威指导</li>
+<li>YAML: YAML 试图用一种比 XML 更敏捷的方式，来完成 XML 所完成的任务。在octopress中，是使用yaml做配置文件的书写的</li>
+</ul>
+<hr>
+<h4 id="依赖库">依赖库</h4>
+<ul>
+<li>homebrew 之前一直使用macport，homebrew比macport更为方便</li>
+<li>gcc mac中去掉了，需要使用homebrew独自安装 </li>
+<li>command line 也需要独立安装 xcode-select —install<br>这些都必须在安装octopress之前安装好</li>
+</ul>
+<h5 id="安装Ruby">安装Ruby</h5>
+<p>有两个Ruby管理工具，Rvm和Rbenv，两个都行，octopress上安装指南<br><a href="http://octopress.org/docs/setup/rvm/" target="_blank" rel="external">“Rvm install guide”</a><br><a href="http://octopress.org/docs/setup/rbenv/" target="_blank" rel="external">“Rbenv install guide”</a></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -117,7 +129,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://yoursite.com/2015/02/01/hello-world/" data-title="Hello World | idealGrass" data-tsina="null" class="share clearfix">
+  <div data-url="http://yoursite.com/2015/02/01/2014-03-25-my-first-octopress/" data-title="idealGrass" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -126,19 +138,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2015/02/01/2014-03-25-my-first-octopress/" title="">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  (no title)</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/04/03/2014-04-03-facebookdeng-lu-jiao-cheng/"  title="Facebook登录教程">
+<a href="/2015/02/01/hello-world/"  title="Hello World">
  <strong>NEXT:</strong><br/> 
- <span>Facebook登录教程
+ <span>Hello World
 </span>
 </a>
 </div>
@@ -155,7 +159,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#如何搭建一个octopress博客"><span class="toc-number">1.</span> <span class="toc-text">如何搭建一个octopress博客</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要搭建octopress博客？"><span class="toc-number">1.1.</span> <span class="toc-text">为什么要搭建octopress博客？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#遇到的问题"><span class="toc-number">1.2.</span> <span class="toc-text">遇到的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#先来记录下一些基本的知识点"><span class="toc-number">1.2.1.</span> <span class="toc-text">先来记录下一些基本的知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#依赖库"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">依赖库</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#安装Ruby"><span class="toc-number">1.2.1.1.1.</span> <span class="toc-text">安装Ruby</span></a></li></ol></li></ol></li></ol></li></ol></li></ol>
   </div>
 
 <div id="asidepart">

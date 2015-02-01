@@ -1,0 +1,409 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh_cn">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Facebook登录教程 | idealGrass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="grass">
+    
+    <meta name="description" content="前言
+在第三方程序中，通过Facebook登录可以使用Facebook账号，获取权限，例如读取用户图片，读取用户好友列表等，完成自己的功能。Facebook的文档是我见过的最详尽最有条理的文档，想起之前使用新浪微博的sdk，只能呵呵了。Facebook提供了一个非常好的例子来演示如何登陆，“Sess">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="idealGrass" title="idealGrass"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="idealGrass">idealGrass</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/atom.xml">Rss</a></li>
+					
+						<li><a href="/sitemap.xml">Sitemap</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/04/03/2014-04-03-facebookdeng-lu-jiao-cheng/" title="Facebook登录教程" itemprop="url">Facebook登录教程</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="grass">grass</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-04-03T00:12:51.000Z" itemprop="datePublished">4月 3 2014</time>
+    Updated:<time datetime="2015-02-01T06:31:45.000Z" itemprop="dateModified">2月 1 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#必备条件"><span class="toc-number">1.1.</span> <span class="toc-text">必备条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">1.2.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#API_预览"><span class="toc-number">1.2.1.</span> <span class="toc-text">API 预览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实现登陆校验"><span class="toc-number">1.2.2.</span> <span class="toc-text">实现登陆校验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#请求权限"><span class="toc-number">1.2.3.</span> <span class="toc-text">请求权限</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#登陆的两种形式"><span class="toc-number">1.2.4.</span> <span class="toc-text">登陆的两种形式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Access_Token"><span class="toc-number">1.2.5.</span> <span class="toc-text">Access Token</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#补充说明"><span class="toc-number">1.3.</span> <span class="toc-text">补充说明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#每次请求绑定Facebook都会弹出权限对话框吗？"><span class="toc-number">1.3.1.</span> <span class="toc-text">每次请求绑定Facebook都会弹出权限对话框吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#请求权限的时候，需要先请求basic_info权限，之后才能请求read或者publish权限吗？"><span class="toc-number">1.3.2.</span> <span class="toc-text">请求权限的时候，需要先请求basic_info权限，之后才能请求read或者publish权限吗？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol>
+		</div>
+		
+		<h2 id="前言">前言</h2>
+<p>在第三方程序中，通过Facebook登录可以使用Facebook账号，获取权限，例如读取用户图片，读取用户好友列表等，完成自己的功能。Facebook的文档是我见过的最详尽最有条理的文档，想起之前使用新浪微博的sdk，只能呵呵了。Facebook提供了一个非常好的例子来演示如何登陆，“SessionLoginSample”。</p>
+<h3 id="必备条件">必备条件</h3>
+<ul>
+<li><p>Facebook sdk以Library的形式提供给开发者，这样开发者不仅能够快速的集成sdk，还能看到源码实现，好处多多，但是个人更倾向于使用jar包，管理起来更加方便，只是由于Facebook sdk中使用到了很多的资源文件，所以无法打成jar包。<br>导入Library的过程很简单，可以参考<a href="https://developers.facebook.com/docs/android/getting-started" target="_blank" rel="external">Getting Started with the Facebook SDK for Android</a></p>
+</li>
+<li><p>在App Dashboard中配置app信息，这里最重要的就是要填写你的key hash信息，key hash是Facebook用来验证apk是否是注册app的一个字符串，有两种方式来获取Key hash</p>
+<ul>
+<li><p>使用keyTool命令  </p>
+<pre><code>  keytool -exportcert -<span class="keyword">alias</span> androiddebugkey -keystore ~<span class="regexp">/.android/debug</span>.keystore | openssl sha1 -binary | openssl base64
+</code></pre><p> <strong>以上获取到的是android 的debug key的hash，发版的apk必须获取release apk的签名，将上述命令中的“-alias” 的参数换成release key的别名，“-keystore”后的keystore的存放位置换成release key的路径就可以了</strong></p>
+<pre><code>   keytool -exportcert -alias <span class="tag">&lt;<span class="title">RELEASE_KEY_ALIAS</span>&gt;</span> -keystore <span class="tag">&lt;<span class="title">RELEASE_KEY_PATH</span>&gt;</span> | openssl sha1 -binary | openssl base64
+</code></pre><ul>
+<li><p>还有一种获取key hash的方式，就是通过代码的形式</p>
+<pre><code> // Add code <span class="keyword">to</span> <span class="built_in">print</span> out the key hash
+<span class="keyword">try</span> {
+    PackageInfo info = getPackageManager().getPackageInfo(
+            <span class="string">"com.facebook.samples.hellofacebook"</span>, 
+            PackageManager.GET_SIGNATURES);
+    <span class="keyword">for</span> (Signature signature : info.signatures) {
+        MessageDigest md = MessageDigest.getInstance(<span class="string">"SHA"</span>);
+        md.update(signature.toByteArray());
+        <span class="built_in">Log</span>.d(<span class="string">"KeyHash:"</span>, Base64.encodeToString(md.digest(), Base64.<span class="keyword">DEFAULT</span>));
+        }
+} <span class="keyword">catch</span> (NameNotFoundException e) {
+
+} <span class="keyword">catch</span> (NoSuchAlgorithmException e) {
+
+}
+</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>   <span class="keyword">*</span><span class="keyword">*</span>通过代码获取key hash 与通过keytool命令一起互相验证。<span class="keyword">*</span><span class="keyword">*</span>
+
+   <span class="keyword">*</span><span class="keyword">*</span>填写Key hash的时候一定要注意，将Key hash复制到输入框里之后，会弹出一个高亮的选项，这个时候一定要点击这个高亮框，而不是复制完成之后，直接点击保存，具体为什么我也不清楚。<span class="keyword">*</span><span class="keyword">*</span>
+</code></pre><ul>
+<li>获取APP Id,在App Dashboard中能够看到。</li>
+</ul>
+<h3 id="代码实现">代码实现</h3>
+<h4 id="API_预览">API 预览</h4>
+<ul>
+<li>LoginButton<br>一个由Facebook sdk提供的登陆按钮，能够维持整个登陆session的状态，登陆之前显示“Login”，登陆之后显示“Logout”</li>
+<li>Session</li>
+<li>UiLifecycleHelper 整个验证过程是和拥有LoginButton的Activity或者Fragment息息相关的。必须要在Activity或者Fragment的生命周期函数里调用这个类的相关方法,onCreate(), onResume(), onPause(), onDestroy(),  and onSaveInstanceState()方法，如果是Fragment，还需要实现onActivityResult()</li>
+<li>Session.StatussCallback 一个登陆过程的回调接口，使用这个接口，能够监控整个登陆过程，实现自己的一些逻辑。</li>
+</ul>
+<h4 id="实现登陆校验">实现登陆校验</h4>
+<h4 id="请求权限">请求权限</h4>
+<p> 可以调用LoginButton的setReadPermissions方法</p>
+<pre><code> authButton.setReadPermissions(<span class="keyword">Arrays</span>.asList(<span class="string">"user_likes"</span>, <span class="string">"user_status"</span>));
+</code></pre><p> 如果你使用自己的一个Buttoon，而不是LoginButton，也可以通过Session才请求这些权限</p>
+<pre><code> <span class="keyword">private</span> Session.StatusCallback statusCallback = 
+    <span class="keyword">new</span> SessionStatusCallback();
+...
+<span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onClickLogin</span>() {
+    Session session = Session.getActiveSession();
+    <span class="keyword">if</span> (!session.isOpened() &amp;&amp; !session.isClosed()) {
+        session.openForRead(<span class="keyword">new</span> Session.OpenRequest(<span class="keyword">this</span>)
+            .setPermissions(Arrays.asList(<span class="string">"basic_info"</span>))
+            .setCallback(statusCallback));
+    } <span class="keyword">else</span> {
+        Session.openActiveSession(getActivity(), <span class="keyword">this</span>, <span class="keyword">true</span>, statusCallback);
+    }
+}
+...
+<span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">SessionStatusCallback</span> <span class="keyword">implements</span> <span class="title">Session</span>.<span class="title">StatusCallback</span> </span>{
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span>(Session session, SessionState state, Exception exception) {
+            <span class="comment">// Respond to session state changes, ex: updating the view</span>
+    }
+}
+</code></pre><p><strong>有一点非常重要的是，当用户登陆的时候，必须要请求basic_info权限</strong></p>
+<h4 id="登陆的两种形式">登陆的两种形式</h4>
+<ul>
+<li>如果用户手机里已经安装了Facebook app，将会通过app进行登陆和授权</li>
+<li>如果用户手机里没有安装Facebook app，将会通过一个包含了网页的对话框来进行登陆。</li>
+</ul>
+<h4 id="Access_Token">Access Token</h4>
+<hr>
+<h3 id="补充说明">补充说明</h3>
+<p>花了将近一周的时间，终于完成了Facebook的绑定和解绑工作，应了一句老话，做出一个功能来简单，但是要做到提供给很多人就难了。实现过程中遇到了很多的问题，记录下来备忘。</p>
+<h4 id="每次请求绑定Facebook都会弹出权限对话框吗？">每次请求绑定Facebook都会弹出权限对话框吗？</h4>
+<p>  仅在第一次绑定的时候弹出授权对话框，绑定成功之后解绑，再次绑定并不会弹出权限对话框了，Facebook是有历史记录的<br>  请求新的权限的时候，弹出的授权对话框里只会显示新的权限，之前绑定过的权限不再显示。</p>
+<h4 id="请求权限的时候，需要先请求basic_info权限，之后才能请求read或者publish权限吗？">请求权限的时候，需要先请求basic_info权限，之后才能请求read或者publish权限吗？</h4>
+<p>  可以直接放在一起请求</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><p><a href="https://developers.facebook.com/docs/android/getting-started" target="_blank" rel="external">Getting Started with the Facebook SDK for Android</a></p>
+</li>
+<li><p><a href="https://developers.facebook.com/docs/reference/android/3.0/Session/" target="_blank" rel="external">Facebook Login for Android</a></p>
+</li>
+<li><p><a href="https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/" target="_blank" rel="external">Manually Build a Login Flow</a></p>
+</li>
+<li><p><a href="https://developers.facebook.com/docs/facebook-login/permissions#reference" target="_blank" rel="external">Permissions with Facebook Login</a></p>
+</li>
+<li><p><a href="https://developers.facebook.com/docs/facebook-login/access-tokens/" target="_blank" rel="external">Access Tokens</a></p>
+</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2014/04/03/2014-04-03-facebookdeng-lu-jiao-cheng/" data-title="Facebook登录教程 | idealGrass" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/02/01/hello-world/" title="Hello World">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  Hello World</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/03/31/2014-03-31-android-studio-shi-yong-bi-ji-[?]/"  title="Android studio 试用笔记一">
+ <strong>NEXT:</strong><br/> 
+ <span>Android studio 试用笔记一
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#必备条件"><span class="toc-number">1.1.</span> <span class="toc-text">必备条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">1.2.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#API_预览"><span class="toc-number">1.2.1.</span> <span class="toc-text">API 预览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实现登陆校验"><span class="toc-number">1.2.2.</span> <span class="toc-text">实现登陆校验</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#请求权限"><span class="toc-number">1.2.3.</span> <span class="toc-text">请求权限</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#登陆的两种形式"><span class="toc-number">1.2.4.</span> <span class="toc-text">登陆的两种形式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Access_Token"><span class="toc-number">1.2.5.</span> <span class="toc-text">Access Token</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#补充说明"><span class="toc-number">1.3.</span> <span class="toc-text">补充说明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#每次请求绑定Facebook都会弹出权限对话框吗？"><span class="toc-number">1.3.1.</span> <span class="toc-text">每次请求绑定Facebook都会弹出权限对话框吗？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#请求权限的时候，需要先请求basic_info权限，之后才能请求read或者publish权限吗？"><span class="toc-number">1.3.2.</span> <span class="toc-text">请求权限的时候，需要先请求basic_info权限，之后才能请求read或者publish权限吗？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="grass">grass</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>

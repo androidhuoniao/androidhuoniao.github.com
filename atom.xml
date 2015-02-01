@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[idealGrass]]></title>
+  
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://yoursite.com/"/>
+  <updated>2015-02-01T06:36:38.639Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name><![CDATA[grass]]></name>
+    <email><![CDATA[grass@trunx.me]]></email>
+  </author>
+  
+  <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[]]></title>
+    <link href="http://yoursite.com/2015/02/01/2014-03-25-my-first-octopress/"/>
+    <id>http://yoursite.com/2015/02/01/2014-03-25-my-first-octopress/</id>
+    <published>2015-02-01T06:31:45.000Z</published>
+    <updated>2015-02-01T06:31:45.000Z</updated>
+    <content type="html"><![CDATA[<hr>
+<p>layout: post<br>title: “如何搭建一个octopress博客”<br>date: 2014-03-25 21:06:54 +0800<br>comments: true</p>
+<h1 id="如何搭建一个octopress博客">如何搭建一个octopress博客</h1>
+<h2 id="为什么要搭建octopress博客？">为什么要搭建octopress博客？</h2>
+<p>最近半年，觉着自己没有什么进步，虽然每天做了很多的工作，但是几乎没有什么积累，究其原因，在于没有记录，没有总结，遂萌发了搭建一个自己博客的念头，看了网友一个朋友的文章<a href="http://yang3wei.github.io/blog/2013/01/03/zhuan-zai-wo-wei-shi-yao-yao-cong-wordpress-zhuan-dao-octopress/" target="_blank" rel="external">“我为什么要从wordpress转到octopress</a>，行了，就是它了，开始搭建了。</p>
+<h2 id="遇到的问题">遇到的问题</h2>
+<p>网络上的octopress搭建教程多如牛毛，貌似都很简单，但是我却遇到了很多的问题，总结出一个规律，不看什么教程，直接去octopress看引导是最保险的。</p>
+<h3 id="先来记录下一些基本的知识点">先来记录下一些基本的知识点</h3>
+<ul>
+<li>Ruby：octopress框架的实现语言。rvm（ruby version manager）是用于管理ruby版本的，rake是ruby中类似于make工具。</li>
+<li>静态站点生成工具：简单地说，不用数据库，直接生成网页文件。Jekyll就是这样的工具，而octopress是构建于它的上层的框架。</li>
+<li>Git：我主观的认为完虐svn的分布式版本控制工具。</li>
+<li>Github：程序员的Facebook,为程序员托管了很多代码的站点。</li>
+<li>Github pages:github推出的，给与程序员自由创造静态网页的功能。支持Jekyll，因此也支持octopress。</li>
+<li>homebrew：mac os下的软件包管理工具，类似于linux下的dpkg。它使用ruby脚本，mac os下自带了ruby。</li>
+<li>octopress 其官网的help中有搭建octopress的足够的权威指导</li>
+<li>YAML: YAML 试图用一种比 XML 更敏捷的方式，来完成 XML 所完成的任务。在octopress中，是使用yaml做配置文件的书写的</li>
+</ul>
+<hr>
+<h4 id="依赖库">依赖库</h4>
+<ul>
+<li>homebrew 之前一直使用macport，homebrew比macport更为方便</li>
+<li>gcc mac中去掉了，需要使用homebrew独自安装 </li>
+<li>command line 也需要独立安装 xcode-select —install<br>这些都必须在安装octopress之前安装好</li>
+</ul>
+<h5 id="安装Ruby">安装Ruby</h5>
+<p>有两个Ruby管理工具，Rvm和Rbenv，两个都行，octopress上安装指南<br><a href="http://octopress.org/docs/setup/rvm/" target="_blank" rel="external">“Rvm install guide”</a><br><a href="http://octopress.org/docs/setup/rbenv/" target="_blank" rel="external">“Rbenv install guide”</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<hr>
+<p>layout: post<br>title: “如何搭建一个octopress博客”<br>date: 2014-03-25 21:06:54 +0800<br>comments: true</p>
+<h1 id="如何搭建一个octopress博客">如何搭建一]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <link href="http://yoursite.com/2015/02/01/hello-world/"/>
+    <id>http://yoursite.com/2015/02/01/hello-world/</id>
+    <published>2015-02-01T05:14:02.000Z</published>
+    <updated>2015-02-01T05:14:02.000Z</updated>
+    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick_Start">Quick Start</h2>
+<h3 id="Create_a_new_post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run_server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+
+<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate_static_files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+
+<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+
+<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Facebook登录教程]]></title>
+    <link href="http://yoursite.com/2014/04/03/2014-04-03-facebookdeng-lu-jiao-cheng/"/>
+    <id>http://yoursite.com/2014/04/03/2014-04-03-facebookdeng-lu-jiao-cheng/</id>
+    <published>2014-04-03T00:12:51.000Z</published>
+    <updated>2015-02-01T06:31:45.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="前言">前言</h2>
+<p>在第三方程序中，通过Facebook登录可以使用Facebook账号，获取权限，例如读取用户图片，读取用户好友列表等，完成自己的功能。Facebook的文档是我见过的最详尽最有条理的文档，想起之前使用新浪微博的sdk，只能呵呵了。Facebook提供了一个非常好的例子来演示如何登陆，“SessionLoginSample”。</p>
+<h3 id="必备条件">必备条件</h3>
+<ul>
+<li><p>Facebook sdk以Library的形式提供给开发者，这样开发者不仅能够快速的集成sdk，还能看到源码实现，好处多多，但是个人更倾向于使用jar包，管理起来更加方便，只是由于Facebook sdk中使用到了很多的资源文件，所以无法打成jar包。<br>导入Library的过程很简单，可以参考<a href="https://developers.facebook.com/docs/android/getting-started" target="_blank" rel="external">Getting Started with the Facebook SDK for Android</a></p>
+</li>
+<li><p>在App Dashboard中配置app信息，这里最重要的就是要填写你的key hash信息，key hash是Facebook用来验证apk是否是注册app的一个字符串，有两种方式来获取Key hash</p>
+<ul>
+<li><p>使用keyTool命令  </p>
+<pre><code>  keytool -exportcert -<span class="keyword">alias</span> androiddebugkey -keystore ~<span class="regexp">/.android/debug</span>.keystore | openssl sha1 -binary | openssl base64
+</code></pre><p> <strong>以上获取到的是android 的debug key的hash，发版的apk必须获取release apk的签名，将上述命令中的“-alias” 的参数换成release key的别名，“-keystore”后的keystore的存放位置换成release key的路径就可以了</strong></p>
+<pre><code>   keytool -exportcert -alias <span class="tag">&lt;<span class="title">RELEASE_KEY_ALIAS</span>&gt;</span> -keystore <span class="tag">&lt;<span class="title">RELEASE_KEY_PATH</span>&gt;</span> | openssl sha1 -binary | openssl base64
+</code></pre><ul>
+<li><p>还有一种获取key hash的方式，就是通过代码的形式</p>
+<pre><code> // Add code <span class="keyword">to</span> <span class="built_in">print</span> out the key hash
+<span class="keyword">try</span> {
+    PackageInfo info = getPackageManager().getPackageInfo(
+            <span class="string">"com.facebook.samples.hellofacebook"</span>, 
+            PackageManager.GET_SIGNATURES);
+    <span class="keyword">for</span> (Signature signature : info.signatures) {
+        MessageDigest md = MessageDigest.getInstance(<span class="string">"SHA"</span>);
+        md.update(signature.toByteArray());
+        <span class="built_in">Log</span>.d(<span class="string">"KeyHash:"</span>, Base64.encodeToString(md.digest(), Base64.<span class="keyword">DEFAULT</span>));
+        }
+} <span class="keyword">catch</span> (NameNotFoundException e) {
+
+} <span class="keyword">catch</span> (NoSuchAlgorithmException e) {
+
+}
+</code></pre></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>   <span class="keyword">*</span><span class="keyword">*</span>通过代码获取key hash 与通过keytool命令一起互相验证。<span class="keyword">*</span><span class="keyword">*</span>
+
+   <span class="keyword">*</span><span class="keyword">*</span>填写Key hash的时候一定要注意，将Key hash复制到输入框里之后，会弹出一个高亮的选项，这个时候一定要点击这个高亮框，而不是复制完成之后，直接点击保存，具体为什么我也不清楚。<span class="keyword">*</span><span class="keyword">*</span>
+</code></pre><ul>
+<li>获取APP Id,在App Dashboard中能够看到。</li>
+</ul>
+<h3 id="代码实现">代码实现</h3>
+<h4 id="API_预览">API 预览</h4>
+<ul>
+<li>LoginButton<br>一个由Facebook sdk提供的登陆按钮，能够维持整个登陆session的状态，登陆之前显示“Login”，登陆之后显示“Logout”</li>
+<li>Session</li>
+<li>UiLifecycleHelper 整个验证过程是和拥有LoginButton的Activity或者Fragment息息相关的。必须要在Activity或者Fragment的生命周期函数里调用这个类的相关方法,onCreate(), onResume(), onPause(), onDestroy(),  and onSaveInstanceState()方法，如果是Fragment，还需要实现onActivityResult()</li>
+<li>Session.StatussCallback 一个登陆过程的回调接口，使用这个接口，能够监控整个登陆过程，实现自己的一些逻辑。</li>
+</ul>
+<h4 id="实现登陆校验">实现登陆校验</h4>
+<h4 id="请求权限">请求权限</h4>
+<p> 可以调用LoginButton的setReadPermissions方法</p>
+<pre><code> authButton.setReadPermissions(<span class="keyword">Arrays</span>.asList(<span class="string">"user_likes"</span>, <span class="string">"user_status"</span>));
+</code></pre><p> 如果你使用自己的一个Buttoon，而不是LoginButton，也可以通过Session才请求这些权限</p>
+<pre><code> <span class="keyword">private</span> Session.StatusCallback statusCallback = 
+    <span class="keyword">new</span> SessionStatusCallback();
+...
+<span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onClickLogin</span>() {
+    Session session = Session.getActiveSession();
+    <span class="keyword">if</span> (!session.isOpened() &amp;&amp; !session.isClosed()) {
+        session.openForRead(<span class="keyword">new</span> Session.OpenRequest(<span class="keyword">this</span>)
+            .setPermissions(Arrays.asList(<span class="string">"basic_info"</span>))
+            .setCallback(statusCallback));
+    } <span class="keyword">else</span> {
+        Session.openActiveSession(getActivity(), <span class="keyword">this</span>, <span class="keyword">true</span>, statusCallback);
+    }
+}
+...
+<span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">SessionStatusCallback</span> <span class="keyword">implements</span> <span class="title">Session</span>.<span class="title">StatusCallback</span> </span>{
+    <span class="annotation">@Override</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span>(Session session, SessionState state, Exception exception) {
+            <span class="comment">// Respond to session state changes, ex: updating the view</span>
+    }
+}
+</code></pre><p><strong>有一点非常重要的是，当用户登陆的时候，必须要请求basic_info权限</strong></p>
+<h4 id="登陆的两种形式">登陆的两种形式</h4>
+<ul>
+<li>如果用户手机里已经安装了Facebook app，将会通过app进行登陆和授权</li>
+<li>如果用户手机里没有安装Facebook app，将会通过一个包含了网页的对话框来进行登陆。</li>
+</ul>
+<h4 id="Access_Token">Access Token</h4>
+<hr>
+<h3 id="补充说明">补充说明</h3>
+<p>花了将近一周的时间，终于完成了Facebook的绑定和解绑工作，应了一句老话，做出一个功能来简单，但是要做到提供给很多人就难了。实现过程中遇到了很多的问题，记录下来备忘。</p>
+<h4 id="每次请求绑定Facebook都会弹出权限对话框吗？">每次请求绑定Facebook都会弹出权限对话框吗？</h4>
+<p>  仅在第一次绑定的时候弹出授权对话框，绑定成功之后解绑，再次绑定并不会弹出权限对话框了，Facebook是有历史记录的<br>  请求新的权限的时候，弹出的授权对话框里只会显示新的权限，之前绑定过的权限不再显示。</p>
+<h4 id="请求权限的时候，需要先请求basic_info权限，之后才能请求read或者publish权限吗？">请求权限的时候，需要先请求basic_info权限，之后才能请求read或者publish权限吗？</h4>
+<p>  可以直接放在一起请求</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><p><a href="https://developers.facebook.com/docs/android/getting-started" target="_blank" rel="external">Getting Started with the Facebook SDK for Android</a></p>
+</li>
+<li><p><a href="https://developers.facebook.com/docs/reference/android/3.0/Session/" target="_blank" rel="external">Facebook Login for Android</a></p>
+</li>
+<li><p><a href="https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/" target="_blank" rel="external">Manually Build a Login Flow</a></p>
+</li>
+<li><p><a href="https://developers.facebook.com/docs/facebook-login/permissions#reference" target="_blank" rel="external">Permissions with Facebook Login</a></p>
+</li>
+<li><p><a href="https://developers.facebook.com/docs/facebook-login/access-tokens/" target="_blank" rel="external">Access Tokens</a></p>
+</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="前言">前言</h2>
+<p>在第三方程序中，通过Facebook登录可以使用Facebook账号，获取权限，例如读取用户图片，读取用户好友列表等，完成自己的功能。Facebook的文档是我见过的最详尽最有条理的文档，想起之前使用新浪微博的sdk，只能呵呵了。Fa]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Android studio 试用笔记一]]></title>
+    <link href="http://yoursite.com/2014/03/31/2014-03-31-android-studio-shi-yong-bi-ji-%5B?%5D/"/>
+    <id>http://yoursite.com/2014/03/31/2014-03-31-android-studio-shi-yong-bi-ji-[?]/</id>
+    <published>2014-03-31T13:18:07.000Z</published>
+    <updated>2015-02-01T06:31:45.000Z</updated>
+    <content type="html"><![CDATA[<p>早就知道了Android studio，只是工作太忙，没有时间去使用，但是心里一直痒痒的，一定要试试这个IDE，马上开始啦。</p>
+<h2 id="概念">概念</h2>
+<ul>
+<li>Moudle<br>modle和eclipse下的project一样的概念，<strong>在Android studio中，新建一个project类似于在eclipse下新建一个workspace，而创建一个module类似于在eclipse下创建一个project</strong></li>
+<li>创建工程的时候，会卡在“Gradle：Download <a href="http://\*marven.org\*”等内容，这个没办法，studio会自动的去下载Gradle软件，我等了一个多小时才下载完毕。" target="_blank" rel="external">http://\*marven.org\*”等内容，这个没办法，studio会自动的去下载Gradle软件，我等了一个多小时才下载完毕。</a></li>
+</ul>
+<h3 id="快捷键">快捷键</h3>
+<ul>
+<li>自动补全</li>
+<li></li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>早就知道了Android studio，只是工作太忙，没有时间去使用，但是心里一直痒痒的，一定要试试这个IDE，马上开始啦。</p>
+<h2 id="概念">概念</h2>
+<ul>
+<li>Moudle<br>modle和eclipse下的project一样的概念，<st]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[自定义不规则格子视图DynamicLatticeView（-）measure过程]]></title>
+    <link href="http://yoursite.com/2014/03/27/2014-03-27-zi-ding-yi-bu-gui-ze-ge-zi-shi-tu-dynamiclatticeview/"/>
+    <id>http://yoursite.com/2014/03/27/2014-03-27-zi-ding-yi-bu-gui-ze-ge-zi-shi-tu-dynamiclatticeview/</id>
+    <published>2014-03-27T10:54:24.000Z</published>
+    <updated>2015-02-01T06:31:45.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="前言：">前言：</h2>
+<p>有的时候我们利用Android提供的视图很难实现自己的特殊需求，或者即使能够实现，但是视图层会很复杂，很多的嵌套，不仅是降低渲染效率，实现起来也会很复杂，写超多的冗余代码，所以这个时候最好是自己根据自己的特殊需求实现一个特殊的视图。</p>
+<h2 id="重写ViewGroup">重写ViewGroup</h2>
+<p>要想实现自定义视图，必须要重写ViewGroup的onMeasure和onLayout方法，onMeasure方法用于测量child View和自身的大小，onLayout用于确定child View的layout位置。</p>
+<h2 id="源码分析">源码分析</h2>
+<p>看一下ViewGroup的measureChild的源码，会发现getChildMeasureSpec方法做了整个measure中最难的一部分，这个方法计算出一个正确的MeasureSpec width， height传给特定的child View。目的是根据自身的MeasureSpec和child View 的layoutparams两方面的信息计算出一个最合适的长和宽。这个方法的逻辑是什么呢？看下面的源码。</p>
+<pre><code> 源码来自：ViewGroup: getChildMeasureSpec:
+
+ <span class="comment">/**
+     * Does the hard part of measureChildren: figuring out the MeasureSpec to
+     * pass to a particular child. This method figures out the right MeasureSpec
+     * for one dimension (height or width) of one child view.
+     *
+     * The goal is to combine information from our MeasureSpec with the
+     * LayoutParams of the child to get the best possible results. For example,
+     * if the this view knows its size (because its MeasureSpec has a mode of
+     * EXACTLY), and the child has indicated in its LayoutParams that it wants
+     * to be the same size as the parent, the parent should ask the child to
+     * layout given an exact size.
+     *
+     * @param spec The requirements for this view
+     * @param padding The padding of this view for the current dimension and
+     *        margins, if applicable
+     * @param childDimension How big the child wants to be in the current
+     *        dimension
+     * @return a MeasureSpec integer for the child
+     */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> getChildMeasureSpec(<span class="keyword">int</span> spec, <span class="keyword">int</span> padding, <span class="keyword">int</span> childDimension) {
+        <span class="keyword">int</span> specMode = MeasureSpec.getMode(spec);
+        <span class="keyword">int</span> specSize = MeasureSpec.getSize(spec);
+
+        <span class="keyword">int</span> <span class="keyword">size</span> = Math.max(<span class="number">0</span>, specSize - padding);
+
+        <span class="keyword">int</span> resultSize = <span class="number">0</span>;
+        <span class="keyword">int</span> resultMode = <span class="number">0</span>;
+
+        <span class="keyword">switch</span> (specMode) {
+        <span class="comment">// Parent has imposed an exact size on us</span>
+        <span class="keyword">case</span> MeasureSpec.EXACTLY:
+            <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) {
+                resultSize = childDimension;
+                resultMode = MeasureSpec.EXACTLY;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) {
+                <span class="comment">// Child wants to be our size. So be it.</span>
+                resultSize = <span class="keyword">size</span>;
+                resultMode = MeasureSpec.EXACTLY;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) {
+                <span class="comment">// Child wants to determine its own size. It can't be</span>
+                <span class="comment">// bigger than us.</span>
+                resultSize = <span class="keyword">size</span>;
+                resultMode = MeasureSpec.AT_MOST;
+            }
+            <span class="keyword">break</span>;
+
+        <span class="comment">// Parent has imposed a maximum size on us</span>
+        <span class="keyword">case</span> MeasureSpec.AT_MOST:
+            <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) {
+                <span class="comment">// Child wants a specific size... so be it</span>
+                resultSize = childDimension;
+                resultMode = MeasureSpec.EXACTLY;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) {
+                <span class="comment">// Child wants to be our size, but our size is not fixed.</span>
+                <span class="comment">// Constrain child to not be bigger than us.</span>
+                resultSize = <span class="keyword">size</span>;
+                resultMode = MeasureSpec.AT_MOST;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) {
+                <span class="comment">// Child wants to determine its own size. It can't be</span>
+                <span class="comment">// bigger than us.</span>
+                resultSize = <span class="keyword">size</span>;
+                resultMode = MeasureSpec.AT_MOST;
+            }
+            <span class="keyword">break</span>;
+
+        <span class="comment">// Parent asked to see how big we want to be</span>
+        <span class="keyword">case</span> MeasureSpec.UNSPECIFIED:
+            <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) {
+                <span class="comment">// Child wants a specific size... let him have it</span>
+                resultSize = childDimension;
+                resultMode = MeasureSpec.EXACTLY;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) {
+                <span class="comment">// Child wants to be our size... find out how big it should</span>
+                <span class="comment">// be</span>
+                resultSize = <span class="number">0</span>;
+                resultMode = MeasureSpec.UNSPECIFIED;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) {
+                <span class="comment">// Child wants to determine its own size.... find out how</span>
+                <span class="comment">// big it should be</span>
+                resultSize = <span class="number">0</span>;
+                resultMode = MeasureSpec.UNSPECIFIED;
+            }
+            <span class="keyword">break</span>;
+        }
+        <span class="keyword">return</span> MeasureSpec.makeMeasureSpec(resultSize, resultMode);
+    }
+</code></pre><h5 id="getChildMeasureSpec的实现逻辑：">getChildMeasureSpec的实现逻辑：</h5>
+<p>例如测量的是childView的宽度：</p>
+<ul>
+<li>Parent自身是MeasureSpec.EXACTLY的，也就是说parent有一个固定大小。<ul>
+<li>如果child的params.width是一个具体的值，那么就用这个固定值，mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.MATCH_PARENT，那么child的width就是parent的width,mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.WRAP_CONTENT，那么child的width就取决于自己了，只要不大于parent的width就可以了,mode为AT_MOST.</li>
+</ul>
+</li>
+<li>Parent自身是MeasureSpec.AT_MOST，也就是说parent的width取决于本身内容的with<ul>
+<li>如果child的params.width是一个具体的值，那么就用这个固定值,mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.MATCH_PARENT,但是这个时候并不知道parent的具体大小，parent还取决于child的width呢，所以这个时候mode为AT_MOST</li>
+<li>如果child的params.width是LayoutParams.WRAP_CONTENT，那么child的width就取决于自己了，只要不大于parent的width就可以了,mode为AT_MOST.</li>
+</ul>
+</li>
+<li>Parent自身是MeasureSpec.UNSPECIFIED的，childView想是多大就多大，和AT_MOST有一些区别，AT_MOST模式下，childview的大小取决于自己的内容，但是会受到parent的限制，不能超过parent给定的边界，而在UNSPECIFIED模式下，就没有这个边界限制了，例如ScollView中能够承载远远大于屏幕尺寸的内容。<ul>
+<li>如果child的params.width是一个具体的值，那么就用这个固定值,mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.MATCH_PARENT,但是这个时候parent并没有具体的大小，只能是childView想多大就多大了，所以childView的size为0，mode为UNSPECIFIED</li>
+<li>如果child的params.width是LayoutParams.WRAP_CONTENT，那么child的width就取决于自己了，想多大就多大，所以childView的size为0，mode为UNSPECIFIED</li>
+</ul>
+</li>
+</ul>
+<p>该方法的英文注释写的浅显易懂，言简意赅，建议看英文注释。</p>
+<h5 id="android_view是如何确定自己的height和width？：">android view是如何确定自己的height和width？：</h5>
+<p>在android中，view想要确认自己的事迹height和width，取决于两方面的因素，自己想要显示多大和自己能显示多大。view的LayoutParams代表了view想要显示多大，自己能显示多大是由父容器决定的。也就是说自身的layoutparams和父容器的限制决定了view的实际height和width。</p>
+<h5 id="MeasureSpec的一些知识：">MeasureSpec的一些知识：</h5>
+<p>要想真正理解getChildMeasureSpec方法，就必须要先理解MeasureSpec类。<br>MeasureSpec的值由specSize和specMode共同组成的，其中specSize记录的是大小，specMode记录的是规格。specMode一共有三种类型，如下所示：</p>
+<ul>
+<li><strong>EXACTLY</strong></li>
+</ul>
+<p>The parent has determined an exact size for the child. The child is going to be given those bounds regardless of how big it wants to be.</p>
+<p>表示父视图希望子视图的大小应该是由specSize的值来决定的，系统默认会按照这个规则来设置子视图的大小，开发人员当然也可以按照自己的意愿设置成任意的大小。</p>
+<ul>
+<li><strong>AT_MOST</strong></li>
+</ul>
+<p>The child can be as large as it wants up to the specified size.</p>
+<p>表示子视图最多只能是specSize中指定的大小，开发人员应该尽可能小得去设置这个视图，并且保证不会超过specSize。系统默认会按照这个规则来设置子视图的大小，开发人员当然也可以按照自己的意愿设置成任意的大小。</p>
+<p><strong>MeasureSpec.AT_MOST will be applied to views that have been set to WRAP_CONTENT if the parent view is bound in size. For example, your parent View might be bound to the screen size. It’s children will be also bound to this size, but it might not be that big. Thus, the parent view will set the MeasureSpec to be AT_MOST which tells the child that it can be anywhere between 0 and screen size. The child will have to make adjustments to ensure that it fits within the bounds that was provided. </strong></p>
+<ul>
+<li><strong>UNSPECIFIED</strong></li>
+</ul>
+<p>The parent has not imposed any constraint on the child. It can be whatever size it wants.</p>
+<p>表示开发人员可以将视图按照自己的意愿设置成任意的大小，没有任何限制。这种情况比较少见，不太会用到。</p>
+<p><strong>什么情况下会用到</strong>UNSPECIFIED<strong>？</strong></p>
+<p>在ListView中，通过调用measureItem方法来实现measure child，如果child的height没有显示的指定为具体的值，无论是WRAP_CONTENT,还是MATCH_PARENT,都会创建为</p>
+<pre><code><span class="attribute">childHeightSpec </span>=<span class="string"> MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);</span>
+</code></pre><p>这是为什么呢？stackoverflow上得一个网友的解释太到位了</p>
+<p><strong>In special cases, the bounds do not matter. For example, a ScrollView. In the case of a ScrollView, the height of the child Views are irrelevant. As such, it will supply an UNSPECIFIED to the children Views which tells the children that they can be as tall as they need to be. The ScrollView will handle the drawing and placement for them.</strong><br>举个例子：<br>如果在ScrollView中放置一个LinearLayout，这个LinearLayout的height已经超过了屏幕的height，这个时候如果使用EXACTLY还是AT_MOST都不行了，ScrollView在measure LinearLayout的时候，EXACTLY的最大值就是ScroolView的height了，而ScrollView的最大值就是屏幕的height，AT_MOST也不行，因为AT_MOST模式的最大值也是ScrollView的heigt，所以只能是<strong>UNSPECIFIED</strong>，这样的话，LinearLayout想多高就多高了，可以看一下LinearLayout的onMeasure方法。</p>
+<h5 id="LayoutParams">LayoutParams</h5>
+<ul>
+<li><strong>MATCH_PARENT</strong><br>MATCH_PARENT means that the view wants to be as big as its parent</li>
+<li><strong>WRAP_CONTENT</strong><br>WRAP_CONTENT means that the view wants to be just large enough to fit<br>its own internal content, taking its own padding into account.</li>
+<li><strong>具体的值</strong><br>显示的指定view的大小。</li>
+</ul>
+<blockquote>
+<p>如果没有给view指定LayoutParams，那么view会使用默认的LayoutParams，width和height都是WRAP_CONTENT.<br>对于ListView来说，如果childView没有显示的指定LayoutParams，将会：</p>
+</blockquote>
+<pre><code>ViewGroup.LayoutParams <span class="variable">p =</span> child.getLayoutParams();
+        <span class="keyword">if</span> (<span class="variable">p =</span>= <span class="constant">null</span>) {
+            <span class="variable">p =</span> new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+</code></pre><ul>
+<li><p>measure child width:</p>
+<pre><code>  <span class="keyword">int</span> childWidthSpec = ViewGroup.getChildMeasureSpec(mWidthMeasureSpec,
+                 mListPadding.<span class="keyword">left</span> + mListPadding.<span class="keyword">right</span>, <span class="keyword">p</span>.width);
+</code></pre></li>
+</ul>
+<ul>
+<li><p>measure child height:</p>
+<pre><code>  <span class="title">int</span> lpHeight = p.height;
+          <span class="title">int</span> childHeightSpec;
+          <span class="title">if</span> (lpHeight &gt; <span class="number">0</span>) {
+              <span class="title">childHeightSpec</span> = MeasureSpec.makeMeasureSpec(lpHeight, MeasureSpec.EXACTLY);
+          } <span class="title">else</span> {
+              <span class="title">childHeightSpec</span> = MeasureSpec.makeMeasureSpec(<span class="number">0</span>, MeasureSpec.UNSPECIFIED);
+          }
+</code></pre></li>
+</ul>
+<p>也就是说如果child view的height无论是指定为LayoutParams.WAP_CONTENT还是LayoutParams.MATCH_PARENT，只要不是具体的值，就设置为0，mode为MeasureSpec.UNSPECIFIED</p>
+<p>那么View是如何measure的呢？</p>
+<ul>
+<li><p>onMeasure:</p>
+<pre><code>   <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span>(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec) {
+          setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
+                  getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
+      }
+</code></pre></li>
+<li><p>getSuggestedMinimumWidth:</p>
+<pre><code>  <span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">getSuggestedMinimumWidth</span>() {
+          <span class="keyword">return</span> (mBackground == <span class="keyword">null</span>) ? mMinWidth :                 max(mMinWidth, mBackground.getMinimumWidth());
+      }
+</code></pre></li>
+<li><p>getDefaultSize</p>
+</li>
+</ul>
+<pre><code>  public <span class="keyword">static</span> <span class="type">int</span> getDefaultSize(<span class="type">int</span> size, <span class="type">int</span> measureSpec) {
+        <span class="type">int</span> <span class="literal">result</span> = size;
+        <span class="type">int</span> specMode = <span class="type">MeasureSpec</span>.getMode(measureSpec);
+        <span class="type">int</span> specSize = <span class="type">MeasureSpec</span>.getSize(measureSpec);
+
+        switch (specMode) {
+        <span class="keyword">case</span> <span class="type">MeasureSpec</span>.<span class="type">UNSPECIFIED</span>:
+            <span class="literal">result</span> = size;
+            <span class="keyword">break</span>;
+        <span class="keyword">case</span> <span class="type">MeasureSpec</span>.<span class="type">AT_MOST</span>:
+        <span class="keyword">case</span> <span class="type">MeasureSpec</span>.<span class="type">EXACTLY</span>:
+            <span class="literal">result</span> = specSize;
+            <span class="keyword">break</span>;
+        }
+        <span class="keyword">return</span> <span class="literal">result</span>;
+    }
+</code></pre><hr>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="前言：">前言：</h2>
+<p>有的时候我们利用Android提供的视图很难实现自己的特殊需求，或者即使能够实现，但是视图层会很复杂，很多的嵌套，不仅是降低渲染效率，实现起来也会很复杂，写超多的冗余代码，所以这个时候最好是自己根据自己的特殊需求实现一个特殊的视图]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[多重嵌套Fragment情况下onActivityResult无响应]]></title>
+    <link href="http://yoursite.com/2014/03/26/2014-03-26-duo-zhong-qian-tao-fragmentqing-kuang-xia-onactivityresultwu-xiang-ying/"/>
+    <id>http://yoursite.com/2014/03/26/2014-03-26-duo-zhong-qian-tao-fragmentqing-kuang-xia-onactivityresultwu-xiang-ying/</id>
+    <published>2014-03-26T11:43:37.000Z</published>
+    <updated>2015-02-01T06:31:45.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="问题描述">问题描述</h2>
+<p>Fragment A嵌套Fragment B，在Fragment B中启动其他的Activity</p>
+<pre><code>     <span class="function">getActivity</span>()<span class="class">.startActivityForResult</span>(intent,requestCode);
+</code></pre><p>结果只在Activity中收到了onActivityResult的回调，Fragment A，B中都没有被调用。</p>
+<h2 id="解决过程">解决过程</h2>
+<ul>
+<li>在网上搜索到，可以在Fragment B中直接调用Fragment的startActivityForResult方法，但是这样Fragment B 也没有收到响应，只有Activity收到了</li>
+<li><p>继续搜索，找到以下解决方法<br>  getParentFragment().startActivityForResult(intent, requestCode);<br>  结果是Activity， Fragment A收到了响应，但是Fragment B始终未收到响应，为什么呢<br>  看一下FragmentActiivyt的onActivityResult是怎么写的</p>
+<pre><code>@Override
+  <span class="keyword">protected</span> <span class="keyword">void</span> onActivityResult(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode, Intent data) {
+      <span class="keyword">int</span> <span class="keyword">index</span> = requestCode&gt;&gt;<span class="number">16</span>;
+      <span class="keyword">if</span> (<span class="keyword">index</span> != <span class="number">0</span>) {
+          <span class="keyword">index</span>--;
+          <span class="keyword">if</span> (mFragments.mActive == <span class="keyword">null</span> || <span class="keyword">index</span> &lt; <span class="number">0</span> || <span class="keyword">index</span> &gt;= mFragments.mActive.size()) {
+              Log.w(TAG, <span class="string">"Activity result fragment index out of range: 0x"</span>
+                      + Integer.toHexString(requestCode));
+              <span class="keyword">return</span>;
+          }
+          Fragment frag = mFragments.mActive.get(<span class="keyword">index</span>);
+          <span class="keyword">if</span> (frag == <span class="keyword">null</span>) {
+              Log.w(TAG, <span class="string">"Activity result no fragment exists for index: 0x"</span>
+                      + Integer.toHexString(requestCode));
+          } <span class="keyword">else</span> {
+              frag.onActivityResult(requestCode&amp;<span class="number">0xffff</span>, resultCode, data);
+          }
+          <span class="keyword">return</span>;
+      }
+      <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, data);
+  }      
+</code></pre><p>我是没有看懂，贴上作者的解释</p>
+<blockquote>
+<p>很显然，设计者把Fragment的下标+1左移16位来标记这个request是不是Fragment的，拿到result再解码出下标，直接取对应的Fragment，这样并没有去考虑对Fragment嵌套Fragment做一个Map映射，所以出现了这种BUG。</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<p>最终的解决方法：<br>在Fragment A的onActivityResult方法中主动调用Fragment B的onActivityResult方法。</p>
+<h4 id="附上使用onAcvitiyResult方法时可能遇到的几个问题">附上使用onAcvitiyResult方法时可能遇到的几个问题</h4>
+<ul>
+<li><h5 id="执行startActivityForResult，没等到被调用的_Activity_返回，onActivityResult()_就被执行了。">执行startActivityForResult，没等到被调用的 Activity 返回，onActivityResult() 就被执行了。</h5>
+<blockquote>
+<p>通常这种情况与被调用的Activity的launchmode有关,在Activity的startActivityForResult方法里说明了这个问题</p>
+<p>Launch an activity for which you would like a result when it finished. When this activity exits, your onActivityResult() method will be called with the given requestCode. Using a negative requestCode is the same as calling startActivity(Intent) (the activity is not launched as a sub-activity).</p>
+<p>Note that this method should only be used with Intent protocols that are defined to return a result. In other protocols (such as ACTION_MAIN or ACTION_VIEW), you may not get the result when you expect. For example, if the activity you are launching uses the singleTask launch mode, it will not run in your task and thus you will immediately receive a cancel result.</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><h4 id="startActivityForResult函数的第二个参数requestcode如果等于0，则onActivityResult永远不会被回调">startActivityForResult函数的第二个参数requestcode如果等于0，则onActivityResult永远不会被回调</h4>
+</li>
+<li><h4 id="理论上使用FragmentActivity_和_Fragment组合时，在Fragment中调用startActivityForResult方法，实际上是调用Fragment所依付的Activity的startActivityForResult方法。然后FragmentActivity会先响应自身的onActivityResult方法，再传递到当前活动的Fragment中。此时，通过重载Fragment的onActivityResult方法可以接受返回事件。这里需要注意，如果重载了FragmentActivity的_onActivityResult方法，一定要调用super-_onActivityResult(),否则Fragment中的_onActivityResult方法不会被调用。">理论上使用FragmentActivity 和 Fragment组合时，在Fragment中调用startActivityForResult方法，实际上是调用Fragment所依付的Activity的startActivityForResult方法。然后FragmentActivity会先响应自身的onActivityResult方法，再传递到当前活动的Fragment中。此时，通过重载Fragment的onActivityResult方法可以接受返回事件。这里需要注意，如果重载了FragmentActivity的 onActivityResult方法，一定要调用super. onActivityResult(),否则Fragment中的 onActivityResult方法不会被调用。</h4>
+</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="问题描述">问题描述</h2>
+<p>Fragment A嵌套Fragment B，在Fragment B中启动其他的Activity</p>
+<pre><code>     <span class="function">getActivity</span>()<]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[title]]></title>
+    <link href="http://yoursite.com/2014/03/25/2014-03-25-title/"/>
+    <id>http://yoursite.com/2014/03/25/2014-03-25-title/</id>
+    <published>2014-03-25T07:02:28.000Z</published>
+    <updated>2015-02-01T06:31:45.000Z</updated>
+    <content type="html"><![CDATA[]]></content>
+    <summary type="html">
+    <![CDATA[]]>
+    </summary>
+    
+  </entry>
+  
+</feed>

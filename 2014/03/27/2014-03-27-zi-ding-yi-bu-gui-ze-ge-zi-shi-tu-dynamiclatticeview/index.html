@@ -1,0 +1,518 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh_cn">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>自定义不规则格子视图DynamicLatticeView（-）measure过程 | idealGrass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="grass">
+    
+    <meta name="description" content="前言：
+有的时候我们利用Android提供的视图很难实现自己的特殊需求，或者即使能够实现，但是视图层会很复杂，很多的嵌套，不仅是降低渲染效率，实现起来也会很复杂，写超多的冗余代码，所以这个时候最好是自己根据自己的特殊需求实现一个特殊的视图。
+重写ViewGroup
+要想实现自定义视图，必须要重写Vi">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="idealGrass" title="idealGrass"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="idealGrass">idealGrass</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/atom.xml">Rss</a></li>
+					
+						<li><a href="/sitemap.xml">Sitemap</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2014/03/27/2014-03-27-zi-ding-yi-bu-gui-ze-ge-zi-shi-tu-dynamiclatticeview/" title="自定义不规则格子视图DynamicLatticeView（-）measure过程" itemprop="url">自定义不规则格子视图DynamicLatticeView（-）measure过程</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="grass">grass</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2014-03-27T10:54:24.000Z" itemprop="datePublished">3月 27 2014</time>
+    Updated:<time datetime="2015-02-01T06:31:45.000Z" itemprop="dateModified">2月 1 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言："><span class="toc-number">1.</span> <span class="toc-text">前言：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重写ViewGroup"><span class="toc-number">2.</span> <span class="toc-text">重写ViewGroup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码分析"><span class="toc-number">3.</span> <span class="toc-text">源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#getChildMeasureSpec的实现逻辑："><span class="toc-number">3.0.0.1.</span> <span class="toc-text">getChildMeasureSpec的实现逻辑：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#android_view是如何确定自己的height和width？："><span class="toc-number">3.0.0.2.</span> <span class="toc-text">android view是如何确定自己的height和width？：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#MeasureSpec的一些知识："><span class="toc-number">3.0.0.3.</span> <span class="toc-text">MeasureSpec的一些知识：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#LayoutParams"><span class="toc-number">3.0.0.4.</span> <span class="toc-text">LayoutParams</span></a></li></ol></li></ol></li></ol></li></ol>
+		</div>
+		
+		<h2 id="前言：">前言：</h2>
+<p>有的时候我们利用Android提供的视图很难实现自己的特殊需求，或者即使能够实现，但是视图层会很复杂，很多的嵌套，不仅是降低渲染效率，实现起来也会很复杂，写超多的冗余代码，所以这个时候最好是自己根据自己的特殊需求实现一个特殊的视图。</p>
+<h2 id="重写ViewGroup">重写ViewGroup</h2>
+<p>要想实现自定义视图，必须要重写ViewGroup的onMeasure和onLayout方法，onMeasure方法用于测量child View和自身的大小，onLayout用于确定child View的layout位置。</p>
+<h2 id="源码分析">源码分析</h2>
+<p>看一下ViewGroup的measureChild的源码，会发现getChildMeasureSpec方法做了整个measure中最难的一部分，这个方法计算出一个正确的MeasureSpec width， height传给特定的child View。目的是根据自身的MeasureSpec和child View 的layoutparams两方面的信息计算出一个最合适的长和宽。这个方法的逻辑是什么呢？看下面的源码。</p>
+<pre><code> 源码来自：ViewGroup: getChildMeasureSpec:
+
+ <span class="comment">/**
+     * Does the hard part of measureChildren: figuring out the MeasureSpec to
+     * pass to a particular child. This method figures out the right MeasureSpec
+     * for one dimension (height or width) of one child view.
+     *
+     * The goal is to combine information from our MeasureSpec with the
+     * LayoutParams of the child to get the best possible results. For example,
+     * if the this view knows its size (because its MeasureSpec has a mode of
+     * EXACTLY), and the child has indicated in its LayoutParams that it wants
+     * to be the same size as the parent, the parent should ask the child to
+     * layout given an exact size.
+     *
+     * @param spec The requirements for this view
+     * @param padding The padding of this view for the current dimension and
+     *        margins, if applicable
+     * @param childDimension How big the child wants to be in the current
+     *        dimension
+     * @return a MeasureSpec integer for the child
+     */</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> getChildMeasureSpec(<span class="keyword">int</span> spec, <span class="keyword">int</span> padding, <span class="keyword">int</span> childDimension) {
+        <span class="keyword">int</span> specMode = MeasureSpec.getMode(spec);
+        <span class="keyword">int</span> specSize = MeasureSpec.getSize(spec);
+
+        <span class="keyword">int</span> <span class="keyword">size</span> = Math.max(<span class="number">0</span>, specSize - padding);
+
+        <span class="keyword">int</span> resultSize = <span class="number">0</span>;
+        <span class="keyword">int</span> resultMode = <span class="number">0</span>;
+
+        <span class="keyword">switch</span> (specMode) {
+        <span class="comment">// Parent has imposed an exact size on us</span>
+        <span class="keyword">case</span> MeasureSpec.EXACTLY:
+            <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) {
+                resultSize = childDimension;
+                resultMode = MeasureSpec.EXACTLY;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) {
+                <span class="comment">// Child wants to be our size. So be it.</span>
+                resultSize = <span class="keyword">size</span>;
+                resultMode = MeasureSpec.EXACTLY;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) {
+                <span class="comment">// Child wants to determine its own size. It can't be</span>
+                <span class="comment">// bigger than us.</span>
+                resultSize = <span class="keyword">size</span>;
+                resultMode = MeasureSpec.AT_MOST;
+            }
+            <span class="keyword">break</span>;
+
+        <span class="comment">// Parent has imposed a maximum size on us</span>
+        <span class="keyword">case</span> MeasureSpec.AT_MOST:
+            <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) {
+                <span class="comment">// Child wants a specific size... so be it</span>
+                resultSize = childDimension;
+                resultMode = MeasureSpec.EXACTLY;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) {
+                <span class="comment">// Child wants to be our size, but our size is not fixed.</span>
+                <span class="comment">// Constrain child to not be bigger than us.</span>
+                resultSize = <span class="keyword">size</span>;
+                resultMode = MeasureSpec.AT_MOST;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) {
+                <span class="comment">// Child wants to determine its own size. It can't be</span>
+                <span class="comment">// bigger than us.</span>
+                resultSize = <span class="keyword">size</span>;
+                resultMode = MeasureSpec.AT_MOST;
+            }
+            <span class="keyword">break</span>;
+
+        <span class="comment">// Parent asked to see how big we want to be</span>
+        <span class="keyword">case</span> MeasureSpec.UNSPECIFIED:
+            <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) {
+                <span class="comment">// Child wants a specific size... let him have it</span>
+                resultSize = childDimension;
+                resultMode = MeasureSpec.EXACTLY;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) {
+                <span class="comment">// Child wants to be our size... find out how big it should</span>
+                <span class="comment">// be</span>
+                resultSize = <span class="number">0</span>;
+                resultMode = MeasureSpec.UNSPECIFIED;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) {
+                <span class="comment">// Child wants to determine its own size.... find out how</span>
+                <span class="comment">// big it should be</span>
+                resultSize = <span class="number">0</span>;
+                resultMode = MeasureSpec.UNSPECIFIED;
+            }
+            <span class="keyword">break</span>;
+        }
+        <span class="keyword">return</span> MeasureSpec.makeMeasureSpec(resultSize, resultMode);
+    }
+</code></pre><h5 id="getChildMeasureSpec的实现逻辑：">getChildMeasureSpec的实现逻辑：</h5>
+<p>例如测量的是childView的宽度：</p>
+<ul>
+<li>Parent自身是MeasureSpec.EXACTLY的，也就是说parent有一个固定大小。<ul>
+<li>如果child的params.width是一个具体的值，那么就用这个固定值，mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.MATCH_PARENT，那么child的width就是parent的width,mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.WRAP_CONTENT，那么child的width就取决于自己了，只要不大于parent的width就可以了,mode为AT_MOST.</li>
+</ul>
+</li>
+<li>Parent自身是MeasureSpec.AT_MOST，也就是说parent的width取决于本身内容的with<ul>
+<li>如果child的params.width是一个具体的值，那么就用这个固定值,mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.MATCH_PARENT,但是这个时候并不知道parent的具体大小，parent还取决于child的width呢，所以这个时候mode为AT_MOST</li>
+<li>如果child的params.width是LayoutParams.WRAP_CONTENT，那么child的width就取决于自己了，只要不大于parent的width就可以了,mode为AT_MOST.</li>
+</ul>
+</li>
+<li>Parent自身是MeasureSpec.UNSPECIFIED的，childView想是多大就多大，和AT_MOST有一些区别，AT_MOST模式下，childview的大小取决于自己的内容，但是会受到parent的限制，不能超过parent给定的边界，而在UNSPECIFIED模式下，就没有这个边界限制了，例如ScollView中能够承载远远大于屏幕尺寸的内容。<ul>
+<li>如果child的params.width是一个具体的值，那么就用这个固定值,mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.MATCH_PARENT,但是这个时候parent并没有具体的大小，只能是childView想多大就多大了，所以childView的size为0，mode为UNSPECIFIED</li>
+<li>如果child的params.width是LayoutParams.WRAP_CONTENT，那么child的width就取决于自己了，想多大就多大，所以childView的size为0，mode为UNSPECIFIED</li>
+</ul>
+</li>
+</ul>
+<p>该方法的英文注释写的浅显易懂，言简意赅，建议看英文注释。</p>
+<h5 id="android_view是如何确定自己的height和width？：">android view是如何确定自己的height和width？：</h5>
+<p>在android中，view想要确认自己的事迹height和width，取决于两方面的因素，自己想要显示多大和自己能显示多大。view的LayoutParams代表了view想要显示多大，自己能显示多大是由父容器决定的。也就是说自身的layoutparams和父容器的限制决定了view的实际height和width。</p>
+<h5 id="MeasureSpec的一些知识：">MeasureSpec的一些知识：</h5>
+<p>要想真正理解getChildMeasureSpec方法，就必须要先理解MeasureSpec类。<br>MeasureSpec的值由specSize和specMode共同组成的，其中specSize记录的是大小，specMode记录的是规格。specMode一共有三种类型，如下所示：</p>
+<ul>
+<li><strong>EXACTLY</strong></li>
+</ul>
+<p>The parent has determined an exact size for the child. The child is going to be given those bounds regardless of how big it wants to be.</p>
+<p>表示父视图希望子视图的大小应该是由specSize的值来决定的，系统默认会按照这个规则来设置子视图的大小，开发人员当然也可以按照自己的意愿设置成任意的大小。</p>
+<ul>
+<li><strong>AT_MOST</strong></li>
+</ul>
+<p>The child can be as large as it wants up to the specified size.</p>
+<p>表示子视图最多只能是specSize中指定的大小，开发人员应该尽可能小得去设置这个视图，并且保证不会超过specSize。系统默认会按照这个规则来设置子视图的大小，开发人员当然也可以按照自己的意愿设置成任意的大小。</p>
+<p><strong>MeasureSpec.AT_MOST will be applied to views that have been set to WRAP_CONTENT if the parent view is bound in size. For example, your parent View might be bound to the screen size. It’s children will be also bound to this size, but it might not be that big. Thus, the parent view will set the MeasureSpec to be AT_MOST which tells the child that it can be anywhere between 0 and screen size. The child will have to make adjustments to ensure that it fits within the bounds that was provided. </strong></p>
+<ul>
+<li><strong>UNSPECIFIED</strong></li>
+</ul>
+<p>The parent has not imposed any constraint on the child. It can be whatever size it wants.</p>
+<p>表示开发人员可以将视图按照自己的意愿设置成任意的大小，没有任何限制。这种情况比较少见，不太会用到。</p>
+<p><strong>什么情况下会用到</strong>UNSPECIFIED<strong>？</strong></p>
+<p>在ListView中，通过调用measureItem方法来实现measure child，如果child的height没有显示的指定为具体的值，无论是WRAP_CONTENT,还是MATCH_PARENT,都会创建为</p>
+<pre><code><span class="attribute">childHeightSpec </span>=<span class="string"> MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);</span>
+</code></pre><p>这是为什么呢？stackoverflow上得一个网友的解释太到位了</p>
+<p><strong>In special cases, the bounds do not matter. For example, a ScrollView. In the case of a ScrollView, the height of the child Views are irrelevant. As such, it will supply an UNSPECIFIED to the children Views which tells the children that they can be as tall as they need to be. The ScrollView will handle the drawing and placement for them.</strong><br>举个例子：<br>如果在ScrollView中放置一个LinearLayout，这个LinearLayout的height已经超过了屏幕的height，这个时候如果使用EXACTLY还是AT_MOST都不行了，ScrollView在measure LinearLayout的时候，EXACTLY的最大值就是ScroolView的height了，而ScrollView的最大值就是屏幕的height，AT_MOST也不行，因为AT_MOST模式的最大值也是ScrollView的heigt，所以只能是<strong>UNSPECIFIED</strong>，这样的话，LinearLayout想多高就多高了，可以看一下LinearLayout的onMeasure方法。</p>
+<h5 id="LayoutParams">LayoutParams</h5>
+<ul>
+<li><strong>MATCH_PARENT</strong><br>MATCH_PARENT means that the view wants to be as big as its parent</li>
+<li><strong>WRAP_CONTENT</strong><br>WRAP_CONTENT means that the view wants to be just large enough to fit<br>its own internal content, taking its own padding into account.</li>
+<li><strong>具体的值</strong><br>显示的指定view的大小。</li>
+</ul>
+<blockquote>
+<p>如果没有给view指定LayoutParams，那么view会使用默认的LayoutParams，width和height都是WRAP_CONTENT.<br>对于ListView来说，如果childView没有显示的指定LayoutParams，将会：</p>
+</blockquote>
+<pre><code>ViewGroup.LayoutParams <span class="variable">p =</span> child.getLayoutParams();
+        <span class="keyword">if</span> (<span class="variable">p =</span>= <span class="constant">null</span>) {
+            <span class="variable">p =</span> new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+</code></pre><ul>
+<li><p>measure child width:</p>
+<pre><code>  <span class="keyword">int</span> childWidthSpec = ViewGroup.getChildMeasureSpec(mWidthMeasureSpec,
+                 mListPadding.<span class="keyword">left</span> + mListPadding.<span class="keyword">right</span>, <span class="keyword">p</span>.width);
+</code></pre></li>
+</ul>
+<ul>
+<li><p>measure child height:</p>
+<pre><code>  <span class="title">int</span> lpHeight = p.height;
+          <span class="title">int</span> childHeightSpec;
+          <span class="title">if</span> (lpHeight &gt; <span class="number">0</span>) {
+              <span class="title">childHeightSpec</span> = MeasureSpec.makeMeasureSpec(lpHeight, MeasureSpec.EXACTLY);
+          } <span class="title">else</span> {
+              <span class="title">childHeightSpec</span> = MeasureSpec.makeMeasureSpec(<span class="number">0</span>, MeasureSpec.UNSPECIFIED);
+          }
+</code></pre></li>
+</ul>
+<p>也就是说如果child view的height无论是指定为LayoutParams.WAP_CONTENT还是LayoutParams.MATCH_PARENT，只要不是具体的值，就设置为0，mode为MeasureSpec.UNSPECIFIED</p>
+<p>那么View是如何measure的呢？</p>
+<ul>
+<li><p>onMeasure:</p>
+<pre><code>   <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span>(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec) {
+          setMeasuredDimension(getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec),
+                  getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec));
+      }
+</code></pre></li>
+<li><p>getSuggestedMinimumWidth:</p>
+<pre><code>  <span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">getSuggestedMinimumWidth</span>() {
+          <span class="keyword">return</span> (mBackground == <span class="keyword">null</span>) ? mMinWidth :                 max(mMinWidth, mBackground.getMinimumWidth());
+      }
+</code></pre></li>
+<li><p>getDefaultSize</p>
+</li>
+</ul>
+<pre><code>  public <span class="keyword">static</span> <span class="type">int</span> getDefaultSize(<span class="type">int</span> size, <span class="type">int</span> measureSpec) {
+        <span class="type">int</span> <span class="literal">result</span> = size;
+        <span class="type">int</span> specMode = <span class="type">MeasureSpec</span>.getMode(measureSpec);
+        <span class="type">int</span> specSize = <span class="type">MeasureSpec</span>.getSize(measureSpec);
+
+        switch (specMode) {
+        <span class="keyword">case</span> <span class="type">MeasureSpec</span>.<span class="type">UNSPECIFIED</span>:
+            <span class="literal">result</span> = size;
+            <span class="keyword">break</span>;
+        <span class="keyword">case</span> <span class="type">MeasureSpec</span>.<span class="type">AT_MOST</span>:
+        <span class="keyword">case</span> <span class="type">MeasureSpec</span>.<span class="type">EXACTLY</span>:
+            <span class="literal">result</span> = specSize;
+            <span class="keyword">break</span>;
+        }
+        <span class="keyword">return</span> <span class="literal">result</span>;
+    }
+</code></pre><hr>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2014/03/27/2014-03-27-zi-ding-yi-bu-gui-ze-ge-zi-shi-tu-dynamiclatticeview/" data-title="自定义不规则格子视图DynamicLatticeView（-）measure过程 | idealGrass" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/03/31/2014-03-31-android-studio-shi-yong-bi-ji-[?]/" title="Android studio 试用笔记一">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  Android studio 试用笔记一</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/03/26/2014-03-26-duo-zhong-qian-tao-fragmentqing-kuang-xia-onactivityresultwu-xiang-ying/"  title="多重嵌套Fragment情况下onActivityResult无响应">
+ <strong>NEXT:</strong><br/> 
+ <span>多重嵌套Fragment情况下onActivityResult无响应
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言："><span class="toc-number">1.</span> <span class="toc-text">前言：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#重写ViewGroup"><span class="toc-number">2.</span> <span class="toc-text">重写ViewGroup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源码分析"><span class="toc-number">3.</span> <span class="toc-text">源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#getChildMeasureSpec的实现逻辑："><span class="toc-number">3.0.0.1.</span> <span class="toc-text">getChildMeasureSpec的实现逻辑：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#android_view是如何确定自己的height和width？："><span class="toc-number">3.0.0.2.</span> <span class="toc-text">android view是如何确定自己的height和width？：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#MeasureSpec的一些知识："><span class="toc-number">3.0.0.3.</span> <span class="toc-text">MeasureSpec的一些知识：</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#LayoutParams"><span class="toc-number">3.0.0.4.</span> <span class="toc-text">LayoutParams</span></a></li></ol></li></ol></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="grass">grass</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>
