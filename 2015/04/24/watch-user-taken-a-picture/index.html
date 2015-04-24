@@ -1,0 +1,427 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh_cn">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Android 导入手机图片 | idealGrass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="grass">
+    
+    <meta name="description" content="用户行为
+
+用户使用手机拍摄照片
+用户下载网页上的照片，网盘的照片，微博的照片到手机
+用户导入照片到SD卡
+
+需求
+
+当用户发生上述行为的时候，将增加的照片导入到程序并上传
+
+实现思路
+监听相机应用
+如果用户拍摄了照片，可能会触发一个Intent，发送广播通知给其他程序
+public static ">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="idealGrass" title="idealGrass"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="idealGrass">idealGrass</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/atom.xml">Rss</a></li>
+					
+						<li><a href="/sitemap.xml">Sitemap</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/04/24/watch-user-taken-a-picture/" title="Android 导入手机图片" itemprop="url">Android 导入手机图片</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="grass">grass</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-04-24T07:18:35.000Z" itemprop="datePublished">4月 24 2015</time>
+    Updated:<time datetime="2015-04-24T10:53:02.000Z" itemprop="dateModified">4月 24 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#用户行为"><span class="toc-number">1.</span> <span class="toc-text">用户行为</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现思路"><span class="toc-number">3.</span> <span class="toc-text">实现思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#监听相机应用"><span class="toc-number">3.1.</span> <span class="toc-text">监听相机应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#public_static_final_String_ACTION_NEW_PICTURE"><span class="toc-number">3.1.1.</span> <span class="toc-text">public static final String ACTION_NEW_PICTURE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码"><span class="toc-number">3.1.2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优点"><span class="toc-number">3.1.3.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点"><span class="toc-number">3.1.4.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#监听Meida数据库"><span class="toc-number">3.2.</span> <span class="toc-text">监听Meida数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#代码-1"><span class="toc-number">3.2.1.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优点-1"><span class="toc-number">3.2.2.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点-1"><span class="toc-number">3.2.3.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#监听文件目录"><span class="toc-number">3.3.</span> <span class="toc-text">监听文件目录</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#代码-2"><span class="toc-number">3.3.1.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优点-2"><span class="toc-number">3.3.2.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点-2"><span class="toc-number">3.3.3.</span> <span class="toc-text">缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+		</div>
+		
+		<h2 id="用户行为">用户行为</h2>
+<ul>
+<li>用户使用手机拍摄照片</li>
+<li>用户下载网页上的照片，网盘的照片，微博的照片到手机</li>
+<li>用户导入照片到SD卡</li>
+</ul>
+<h2 id="需求">需求</h2>
+<ul>
+<li>当用户发生上述行为的时候，将增加的照片导入到程序并上传</li>
+</ul>
+<h2 id="实现思路">实现思路</h2>
+<h3 id="监听相机应用">监听相机应用</h3>
+<p>如果用户拍摄了照片，可能会触发一个Intent，发送广播通知给其他程序</p>
+<h4 id="public_static_final_String_ACTION_NEW_PICTURE">public static final String ACTION_NEW_PICTURE</h4>
+<p>Added in API level 14</p>
+<p>Broadcast Action: A new picture is taken by the camera, and the entry of the picture has been added to the media store. getData() is URI of the picture.</p>
+<p>Constant Value: “android.hardware.action.NEW_PICTURE”</p>
+<blockquote>
+<p>public static final String ACTION_NEW_VIDEO</p>
+<p>Added in API level 14</p>
+<p>Broadcast Action: A new video is recorded by the camera, and the entry of the</p>
+<p>video has been added to the media store. getData() is URI of the video.</p>
+<p>Constant Value: “android.hardware.action.NEW_VIDEO”</p>
+</blockquote>
+<h4 id="代码">代码</h4>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CameraEventReciver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>{
+
+<span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span>(Context context, Intent intent) {
+    Cursor cursor = context.getContentResolver().query(intent.getData(),<span class="keyword">null</span>,<span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);
+    cursor.moveToFirst();
+    String image_path = cursor.getString(cursor.getColumnIndex(<span class="string">"_data"</span>));
+    Toast.makeText(context, <span class="string">"New Photo is Saved as : -"</span> + image_path, <span class="number">1000</span>).show();
+  }
+}
+</code></pre><hr>
+<pre><code> <span class="tag">&lt;<span class="title">receiver
+</span>        <span class="attribute">android:name</span>=<span class="value">"sample.grass.category.mediastore.CameraEventReciver"</span>
+        <span class="attribute">android:enabled</span>=<span class="value">"true"</span>
+        <span class="attribute">android:exported</span>=<span class="value">"true"</span> &gt;</span>
+        <span class="tag">&lt;<span class="title">intent-filter</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">action</span> <span class="attribute">android:name</span>=<span class="value">"android.hardware.action.NEW_PICTURE"</span> /&gt;</span>
+            <span class="tag">&lt;<span class="title">category</span> <span class="attribute">android:name</span>=<span class="value">"android.intent.category.DEFAULT"</span> /&gt;</span>
+            <span class="tag">&lt;<span class="title">data</span> <span class="attribute">android:mimeType</span>=<span class="value">"image/*"</span> /&gt;</span>
+
+        <span class="tag">&lt;/<span class="title">intent-filter</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">receiver</span>&gt;</span>
+</code></pre><p> <strong>测试结果：</strong><br> 能够监听到用户拍摄了照片，但是仅限于系统相机，使用其他的相机apk可能收到广播，也有可能收不到</p>
+<h4 id="优点">优点</h4>
+<ul>
+<li>即使应用程序没有启动，也能接收到通知，从而被唤醒</li>
+</ul>
+<h4 id="缺点">缺点</h4>
+<ul>
+<li>有的相机应用并没有实现发送广播，不是完全可以被依赖</li>
+<li>无法监测用户下载图片或者导入照片</li>
+</ul>
+<h3 id="监听Meida数据库">监听Meida数据库</h3>
+<p>无论是用户使用哪个相机拍摄照片，还是用户导入图片到sd卡，还是用户下载照片到手机，都会引起Media 数据库的变化，监听这个变化，导入照片到Trunx</p>
+<h4 id="代码-1">代码</h4>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">UriObserver</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">ContentObserver</span> </span>{
+    <span class="keyword">public</span> UriObserver(Handler handler) {
+        <span class="keyword">super</span>(handler);
+        <span class="comment">// TODO Auto-generated constructor stub</span>
+    }
+
+    @Override
+    <span class="keyword">public</span> <span class="keyword">void</span> onChange(<span class="keyword">boolean</span> selfChange) {
+        <span class="comment">// TODO Auto-generated method stub</span>
+        <span class="keyword">super</span>.onChange(selfChange);
+
+        Log.d(<span class="string">"INSTANT"</span>, <span class="string">"GETTING CHANGES"</span>);
+    }
+}
+</code></pre><hr>
+<pre><code>UriObserver observer = <span class="keyword">new</span> UriObserver(<span class="keyword">new</span> Handler());
+<span class="keyword">this</span>.getApplicationContext()
+    .getContentResolver()
+    .registerContentObserver(
+    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, <span class="literal">false</span>,
+    observer);
+</code></pre><h4 id="优点-1">优点</h4>
+<ul>
+<li>可以监听用户导入图片，用户下载图片，用户使用各种第三方相机拍摄图片</li>
+</ul>
+<h4 id="缺点-1">缺点</h4>
+<ul>
+<li>依赖于程序被启动，如果程序被杀掉了,就无法监听了</li>
+</ul>
+<h3 id="监听文件目录">监听文件目录</h3>
+<h4 id="代码-2">代码</h4>
+<pre><code>FileObserver observer = new FileObserver(android.os.Environment.getExternalStorageDirectory().toString() + "/DCIM/100MEDIA") { // <span class="operator"><span class="keyword">set</span> up a file observer <span class="keyword">to</span> watch this directory <span class="keyword">on</span> sd card
+                @Override
+            <span class="keyword">public</span> void onEvent(<span class="built_in">int</span> <span class="keyword">event</span>, <span class="keyword">String</span> file) {
+                <span class="keyword">if</span>(<span class="keyword">event</span> == FileObserver.<span class="keyword">CREATE</span> &amp;&amp; !file.equals(<span class="string">".probe"</span>)){ // <span class="keyword">check</span> <span class="keyword">if</span> its a <span class="string">"create"</span> <span class="keyword">and</span> <span class="keyword">not</span> equal <span class="keyword">to</span> .probe because thats created every <span class="keyword">time</span> camera <span class="keyword">is</span> launched
+                    <span class="keyword">Log</span>.d(TAG, <span class="string">"File created ["</span> + android.os.Environment.getExternalStorageDirectory().toString() + <span class="string">"/DCIM/100MEDIA/"</span> + file + <span class="string">"]"</span>);</span>
+                    fileSaved = "New photo Saved: " + file;
+                }
+            }
+        };
+observer.startWatching(); // <span class="operator"><span class="keyword">start</span> the observer</span>
+</code></pre><h4 id="优点-2">优点</h4>
+<ul>
+<li>能够监听到上述的所有的用户行为</li>
+</ul>
+<h4 id="缺点-2">缺点</h4>
+<ul>
+<li>需要硬编码，并且监听的目录太多，事倍功半</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://stackoverflow.com/questions/4571461/broadcast-receiver-wont-receive-camera-event/4588363#4588363" target="_blank" rel="external">broadcast receiver wont receive camera event</a></li>
+<li><a href="http://stackoverflow.com/questions/3015448/where-is-android-camera-new-picture-defined" target="_blank" rel="external">where is android.camera.NEW_PICTURE defined?</a></li>
+<li><a href="http://developer.android.com/reference/android/hardware/Camera.html#ACTION_NEW_PICTURE" target="_blank" rel="external">Camera</a></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2015/04/24/watch-user-taken-a-picture/" data-title="Android 导入手机图片 | idealGrass" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/04/16/LinkedHashMap/"  title="LinkedHashMap">
+ <strong>NEXT:</strong><br/> 
+ <span>LinkedHashMap
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#用户行为"><span class="toc-number">1.</span> <span class="toc-text">用户行为</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">2.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现思路"><span class="toc-number">3.</span> <span class="toc-text">实现思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#监听相机应用"><span class="toc-number">3.1.</span> <span class="toc-text">监听相机应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#public_static_final_String_ACTION_NEW_PICTURE"><span class="toc-number">3.1.1.</span> <span class="toc-text">public static final String ACTION_NEW_PICTURE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码"><span class="toc-number">3.1.2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优点"><span class="toc-number">3.1.3.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点"><span class="toc-number">3.1.4.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#监听Meida数据库"><span class="toc-number">3.2.</span> <span class="toc-text">监听Meida数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#代码-1"><span class="toc-number">3.2.1.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优点-1"><span class="toc-number">3.2.2.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点-1"><span class="toc-number">3.2.3.</span> <span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#监听文件目录"><span class="toc-number">3.3.</span> <span class="toc-text">监听文件目录</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#代码-2"><span class="toc-number">3.3.1.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#优点-2"><span class="toc-number">3.3.2.</span> <span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#缺点-2"><span class="toc-number">3.3.3.</span> <span class="toc-text">缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="grass">grass</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>

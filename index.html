@@ -67,15 +67,95 @@
 
   <section class="post" itemscope itemprop="blogPost">
   
-    <a href="/2015/02/01/hello-world/" title="Hello World" itemprop="url">
+    <a href="/2015/04/24/watch-user-taken-a-picture/" title="Android 导入手机图片" itemprop="url">
   
-    <h1 itemprop="name">Hello World</h1>
+    <h1 itemprop="name">Android 导入手机图片</h1>
     
      
-           <p itemprop="description" >Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the </p>
+           <p itemprop="description" >用户行为
+
+用户使用手机拍摄照片
+用户下载网页上的照片，网盘的照片，微博的照片到手机
+用户导入照片到SD卡
+
+需求
+
+当用户发生上述行为的时候，将增加的照片导入到程序并上传
+
+实现思路
+监听相机应用
+如果用户拍摄了照片，可能会触发一个Intent，发送广播通知给其他程序
+publ</p>
         
     
-    <time datetime="2015-02-01T05:14:02.000Z" itemprop="datePublished">2月 1 2015</time>
+    <time datetime="2015-04-24T07:18:35.000Z" itemprop="datePublished">4月 24 2015</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2015/04/16/LinkedHashMap/" title="LinkedHashMap" itemprop="url">
+  
+    <h1 itemprop="name">LinkedHashMap</h1>
+    
+     
+           <p itemprop="description" >LinkedHashMap和HashMap的区别
+
+Iterator遍历元素是没有次序的，而LinkedHashMap是根据插入顺序来遍历数据的，也就是说HashMap不能保证迭代顺序，而LinkedHashMap可以
+HashMap是单向链表，LinkedHashMap是双向链</p>
+        
+    
+    <time datetime="2015-04-16T04:59:33.000Z" itemprop="datePublished">4月 16 2015</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2015/04/16/Hashmap/" title="HashMap" itemprop="url">
+  
+    <h1 itemprop="name">HashMap</h1>
+    
+     
+           <p itemprop="description" >put一个元素的流程
+当程序试图将一个key-value对放入HashMap中时，程序首先根据该 key 的 hashCode() 返回值决定该 Entry 的存储位置：如果两个 Entry 的 key 的 hashCode() 返回值相同，那它们的存储位置相同。如果这两个 En</p>
+        
+    
+    <time datetime="2015-04-16T04:59:21.000Z" itemprop="datePublished">4月 16 2015</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2015/04/16/SubsamplingScaleImageView(一)UI分析/" title="SubsamplingScaleImageView(一)UI分析" itemprop="url">
+  
+    <h1 itemprop="name">SubsamplingScaleImageView(一)UI分析</h1>
+    
+     
+           <p itemprop="description" >文章还在修改中
+
+onMeasure方法分析
+对于一个View来说，第一怎么重写自己的onMeasure方法，只取决于自己的功能是什么。第二view可以有各种各样的parent view，可以被嵌套在各种各样的视图体系结构里，View必须在onMeauser方法中对于这些变化提供</p>
+        
+    
+    <time datetime="2015-04-16T04:53:56.000Z" itemprop="datePublished">4月 16 2015</time>
+  </a>
+</section>
+
+  <section class="post" itemscope itemprop="blogPost">
+  
+    <a href="/2015/04/16/subsampling-scale-image-view/" title="subsampling-scale-image-view源码分析" itemprop="url">
+  
+    <h1 itemprop="name">subsampling-scale-image-view源码分析</h1>
+    
+     
+           <p itemprop="description" >前言
+
+代码仓库地址
+
+在Android平台，用户再查看图片的时候，都有放大缩小图片的需求，放大的主要目的是观察图片的细节。Android提供了ImageView作为展示图片的官方控件，很遗憾，ImageView无法实现这个效果，有人说了，可以通过Matrix矩阵来实现啊，确实通</p>
+        
+    
+    <time datetime="2015-04-16T04:43:07.000Z" itemprop="datePublished">4月 16 2015</time>
   </a>
 </section>
 

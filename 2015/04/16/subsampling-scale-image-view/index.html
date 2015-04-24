@@ -4,12 +4,16 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | idealGrass</title>
+    <title>subsampling-scale-image-view源码分析 | idealGrass</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="grass">
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
+    <meta name="description" content="前言
+
+代码仓库地址
+
+在Android平台，用户再查看图片的时候，都有放大缩小图片的需求，放大的主要目的是观察图片的细节。Android提供了ImageView作为展示图片的官方控件，很遗憾，ImageView无法实现这个效果，有人说了，可以通过Matrix矩阵来实现啊，确实通过Matrix可以实">
     
     
     
@@ -70,15 +74,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/02/01/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2015/04/16/subsampling-scale-image-view/" title="subsampling-scale-image-view源码分析" itemprop="url">subsampling-scale-image-view源码分析</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://yoursite.com" title="grass">grass</a>
     </p>
   <p class="article-time">
-    <time datetime="2015-02-01T05:14:02.000Z" itemprop="datePublished">2月 1 2015</time>
-    Updated:<time datetime="2015-02-01T05:14:02.000Z" itemprop="dateModified">2月 1 2015</time>
+    <time datetime="2015-04-16T04:43:07.000Z" itemprop="datePublished">4月 16 2015</time>
+    Updated:<time datetime="2015-04-16T04:47:18.000Z" itemprop="dateModified">4月 16 2015</time>
     
   </p>
 </header>
@@ -87,27 +91,35 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#要点"><span class="toc-number">2.</span> <span class="toc-text">要点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-number">3.</span> <span class="toc-text">目录</span></a></li></ol>
 		</div>
 		
-		<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+		<h2 id="前言">前言</h2>
+<ul>
+<li><a href="https://github.com/davemorrissey/subsampling-scale-image-view" target="_blank" rel="external">代码仓库地址</a></li>
+</ul>
+<p>在Android平台，用户再查看图片的时候，都有放大缩小图片的需求，放大的主要目的是观察图片的细节。Android提供了ImageView作为展示图片的官方控件，很遗憾，ImageView无法实现这个效果，有人说了，可以通过Matrix矩阵来实现啊，确实通过Matrix可以实现图片的放大或者缩小，但是ImageView完全加载一张大图片的内存代价是惊人的，这种实现方式很容易爆掉内存，最好的做法就是只加载屏幕显示的那部分内容，用户看什么就显示什么，类似于百度地图。</p>
+<p>有没有现成的库可以使用呢？github上还真有很多实现了这个功能的库，个人认为SubSamplingScaleImageView是其中最简单，最好用的一个类库了。作者还在持续改进，重构代码，使之更加好用。</p>
+<h2 id="要点">要点</h2>
+<ul>
+<li>实现View，重写measure，layout，draw过程</li>
+<li>将整个Bitmap分割成很多方块</li>
+<li>使用BitmapRegionDecoder来区间加载这些小的Bitmap，铺满整个屏幕</li>
+<li>以屏幕的左上角为原点，用户移动的时候，控制图片的Translate,映射Bitmap内容到屏幕上去</li>
+</ul>
+<h2 id="目录">目录</h2>
+<ul>
+<li><p>UI实现</p>
+</li>
+<li><p>加载图片细节的实现逻辑</p>
+</li>
+<li><p>实现首先显示缩略图，然后加载原图</p>
+</li>
+<li><p>实现多指放大，动态的加载原图</p>
+</li>
+<li><p>图片超过屏幕大小的时候，移动图片</p>
+</li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -117,7 +129,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://yoursite.com/2015/02/01/hello-world/" data-title="Hello World | idealGrass" data-tsina="null" class="share clearfix">
+  <div data-url="http://yoursite.com/2015/04/16/subsampling-scale-image-view/" data-title="subsampling-scale-image-view源码分析 | idealGrass" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -126,6 +138,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2015/04/16/SubsamplingScaleImageView(一)UI分析/" title="SubsamplingScaleImageView(一)UI分析">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  SubsamplingScaleImageView(一)UI分析</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2014/04/03/2014-04-03-facebookdeng-lu-jiao-cheng/"  title="Facebook登录教程">
@@ -147,7 +167,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick_Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create_a_new_post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run_server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate_static_files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy_to_remote_sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#要点"><span class="toc-number">2.</span> <span class="toc-text">要点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#目录"><span class="toc-number">3.</span> <span class="toc-text">目录</span></a></li></ol>
   </div>
 
 <div id="asidepart">

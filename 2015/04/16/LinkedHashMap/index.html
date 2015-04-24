@@ -1,0 +1,371 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh_cn">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>LinkedHashMap | idealGrass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="grass">
+    
+    <meta name="description" content="LinkedHashMap和HashMap的区别
+
+Iterator遍历元素是没有次序的，而LinkedHashMap是根据插入顺序来遍历数据的，也就是说HashMap不能保证迭代顺序，而LinkedHashMap可以
+HashMap是单向链表，LinkedHashMap是双向链表，HashMap的">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="idealGrass" title="idealGrass"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="idealGrass">idealGrass</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/atom.xml">Rss</a></li>
+					
+						<li><a href="/sitemap.xml">Sitemap</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/04/16/LinkedHashMap/" title="LinkedHashMap" itemprop="url">LinkedHashMap</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="grass">grass</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-04-16T04:59:33.000Z" itemprop="datePublished">4月 16 2015</time>
+    Updated:<time datetime="2015-04-16T04:59:33.000Z" itemprop="dateModified">4月 16 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#LinkedHashMap和HashMap的区别"><span class="toc-number">1.</span> <span class="toc-text">LinkedHashMap和HashMap的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么使用LinkedHashMap来作为LruCache的基础实现?"><span class="toc-number">2.</span> <span class="toc-text">为什么使用LinkedHashMap来作为LruCache的基础实现?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么LinkedHashMap要使用双向链表"><span class="toc-number">3.</span> <span class="toc-text">为什么LinkedHashMap要使用双向链表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LinkedHashMap的存储结构图"><span class="toc-number">4.</span> <span class="toc-text">LinkedHashMap的存储结构图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#removeEldestEntry"><span class="toc-number">5.</span> <span class="toc-text">removeEldestEntry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#put添加一个元素的时候，如果达到了LinkedHashMap的最大容量，是如何删除最老元素的"><span class="toc-number">6.</span> <span class="toc-text">put添加一个元素的时候，如果达到了LinkedHashMap的最大容量，是如何删除最老元素的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LruCache动态的更改最大容量"><span class="toc-number">7.</span> <span class="toc-text">LruCache动态的更改最大容量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LruCache要加锁来保证同步"><span class="toc-number">8.</span> <span class="toc-text">LruCache要加锁来保证同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#仔细看完LruCache的所有代码，看看是不是还有其他的问题"><span class="toc-number">9.</span> <span class="toc-text">仔细看完LruCache的所有代码，看看是不是还有其他的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自己使用HashMap自定义一个LruCache，看看有甚么问题"><span class="toc-number">10.</span> <span class="toc-text">自己使用HashMap自定义一个LruCache，看看有甚么问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文章"><span class="toc-number">11.</span> <span class="toc-text">参考文章</span></a></li></ol>
+		</div>
+		
+		<h3 id="LinkedHashMap和HashMap的区别">LinkedHashMap和HashMap的区别</h3>
+<ul>
+<li>Iterator遍历元素是没有次序的，而LinkedHashMap是根据插入顺序来遍历数据的，也就是说HashMap不能保证迭代顺序，而LinkedHashMap可以</li>
+<li>HashMap是单向链表，LinkedHashMap是双向链表，HashMap的单项链表指的是同一个hashcode的元素发生碰撞之后，HashMap将他们存放在同一个index位置，但是这些hashcode相同的元素之间建立单向链表关系，而LinkedHashMap指的是数组元素之间建立双向链表关系，同样hashcode的元素之间建立单向链表关系</li>
+<li></li>
+</ul>
+<h3 id="为什么使用LinkedHashMap来作为LruCache的基础实现?">为什么使用LinkedHashMap来作为LruCache的基础实现?</h3>
+<ul>
+<li><p><strong>LruCache必须具备如下几个要求：</strong></p>
+<ul>
+<li>查询速度快</li>
+<li>删除和添加元素也要快</li>
+<li>访问元素之后，就要将这个元素放置在队列的头部，put元素也要放在头部，这样就会形成一个根据访问顺序排列的队列</li>
+<li>LruCache填满的时候，最近添加和访问的元素不能删除，已经很久没有访问的元素应该被删除掉，也就是LruCache必须有一个机制，来记录元素的访问和添加的顺序。</li>
+</ul>
+<hr>
+<p>  <strong>以上三个要求正是LinkedHashMap具备的</strong></p>
+<ul>
+<li>LinkedHashMap使用hash表来存储元素，访问元素的速度一般来讲为O(1), LinkedHashMap将Key的hashcode转换为底层数组的索引，直接从数组中读取元素</li>
+<li>LinkedHashMap不但是个数组，还是一个双向的链表，我们知道链表的添加和删除的时间复杂度都是O(1)</li>
+<li>LinkedHashMap能够维持元素的插入顺序或者访问顺序，可以自定义，默认为插入顺序，在LinkedHashMap中，put，get，putAll操作元素的时候，就将元素移动到链表的头部，当删除元素的时候，直接从链表的末尾移除即可。</li>
+</ul>
+</li>
+</ul>
+<h3 id="为什么LinkedHashMap要使用双向链表">为什么LinkedHashMap要使用双向链表</h3>
+<ul>
+<li>使用双向链表，可以从链表的头部访问元素，添加新元素，从末尾开始删除最老的元素</li>
+</ul>
+<h3 id="LinkedHashMap的存储结构图">LinkedHashMap的存储结构图</h3>
+<p><a href="http://www.cnblogs.com/children/archive/2012/10/02/2710624.html" target="_blank" rel="external">参考文章</a></p>
+<p><strong>LinkedHashMap使用一个header节点实现了双向链表一遍具有的header节点和tail节点。</strong></p>
+<h3 id="removeEldestEntry">removeEldestEntry</h3>
+<h3 id="put添加一个元素的时候，如果达到了LinkedHashMap的最大容量，是如何删除最老元素的">put添加一个元素的时候，如果达到了LinkedHashMap的最大容量，是如何删除最老元素的</h3>
+<pre><code><span class="input"><span class="prompt">// 删除最近最少使用元素的策略定义  
+Entry&lt;K,V&gt;</span> eldest = header.after;  
+if (removeEldestEntry(eldest)) {  
+    removeEntryForKey(eldest.key);  
+} </span>
+</code></pre><hr>
+<pre><code><span class="comment">// 重写这个方法，定义自己的删除策略</span>
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_ENTRIES = <span class="number">100</span>;  
+<span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span>(Map.Entry eldest) {  
+    <span class="keyword">return</span> size() &gt; MAX_ENTRIES;  
+} 
+</code></pre><blockquote>
+<p>LruCache是怎么处理的呢？首先将元素添加到queue的头部，然后计算是否超过了maxsize，如果超过了，调用trimSize方法，从尾部开始删除程序，直到小于maxsize，具体的可以参看LruCache的<strong>put()</strong>，和<strong>trimSize()</strong>函数。</p>
+</blockquote>
+<h3 id="LruCache动态的更改最大容量">LruCache动态的更改最大容量</h3>
+<ul>
+<li>LruCache提供了一个函数<strong>resize(int maxSize)</strong> 来动态的改变cache的最大容量，这样程序开发的时候可以非常充分的利用最大剩余内存。</li>
+</ul>
+<h3 id="LruCache要加锁来保证同步">LruCache要加锁来保证同步</h3>
+<h3 id="仔细看完LruCache的所有代码，看看是不是还有其他的问题">仔细看完LruCache的所有代码，看看是不是还有其他的问题</h3>
+<h3 id="自己使用HashMap自定义一个LruCache，看看有甚么问题">自己使用HashMap自定义一个LruCache，看看有甚么问题</h3>
+<h3 id="参考文章">参考文章</h3>
+<ul>
+<li><a href="http://zhangshixi.iteye.com/blog/673789" target="_blank" rel="external">深入Java集合学习系列：LinkedHashMap的实现原理</a></li>
+<li><a href="http://zhangshixi.iteye.com/blog/672697#comments" target="_blank" rel="external">深入Java集合学习系列：HashMap的实现原理 </a></li>
+<li><a href="http://www.cnblogs.com/children/archive/2012/10/02/2710624.html" target="_blank" rel="external">理解LinkedHashMap</a></li>
+<li><a href="http://stackvoid.com/implementation-of-LinkedHashMap-and-LRU-implementation/" target="_blank" rel="external">LinkedHashMap源码分析与LRU实现(非常好)</a></li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2015/04/16/LinkedHashMap/" data-title="LinkedHashMap | idealGrass" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/04/24/watch-user-taken-a-picture/" title="Android 导入手机图片">
+  <strong>PREVIOUS:</strong><br/>
+  <span>
+  Android 导入手机图片</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/04/16/Hashmap/"  title="HashMap">
+ <strong>NEXT:</strong><br/> 
+ <span>HashMap
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#LinkedHashMap和HashMap的区别"><span class="toc-number">1.</span> <span class="toc-text">LinkedHashMap和HashMap的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么使用LinkedHashMap来作为LruCache的基础实现?"><span class="toc-number">2.</span> <span class="toc-text">为什么使用LinkedHashMap来作为LruCache的基础实现?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么LinkedHashMap要使用双向链表"><span class="toc-number">3.</span> <span class="toc-text">为什么LinkedHashMap要使用双向链表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LinkedHashMap的存储结构图"><span class="toc-number">4.</span> <span class="toc-text">LinkedHashMap的存储结构图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#removeEldestEntry"><span class="toc-number">5.</span> <span class="toc-text">removeEldestEntry</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#put添加一个元素的时候，如果达到了LinkedHashMap的最大容量，是如何删除最老元素的"><span class="toc-number">6.</span> <span class="toc-text">put添加一个元素的时候，如果达到了LinkedHashMap的最大容量，是如何删除最老元素的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LruCache动态的更改最大容量"><span class="toc-number">7.</span> <span class="toc-text">LruCache动态的更改最大容量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LruCache要加锁来保证同步"><span class="toc-number">8.</span> <span class="toc-text">LruCache要加锁来保证同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#仔细看完LruCache的所有代码，看看是不是还有其他的问题"><span class="toc-number">9.</span> <span class="toc-text">仔细看完LruCache的所有代码，看看是不是还有其他的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自己使用HashMap自定义一个LruCache，看看有甚么问题"><span class="toc-number">10.</span> <span class="toc-text">自己使用HashMap自定义一个LruCache，看看有甚么问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文章"><span class="toc-number">11.</span> <span class="toc-text">参考文章</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="grass">grass</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>

@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-02-01T06:44:48.579Z</updated>
+  <updated>2015-04-24T10:53:48.663Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,32 +15,496 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[Hello World]]></title>
-    <link href="http://yoursite.com/2015/02/01/hello-world/"/>
-    <id>http://yoursite.com/2015/02/01/hello-world/</id>
-    <published>2015-02-01T05:14:02.000Z</published>
-    <updated>2015-02-01T05:14:02.000Z</updated>
-    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+    <title><![CDATA[Android 导入手机图片]]></title>
+    <link href="http://yoursite.com/2015/04/24/watch-user-taken-a-picture/"/>
+    <id>http://yoursite.com/2015/04/24/watch-user-taken-a-picture/</id>
+    <published>2015-04-24T07:18:35.000Z</published>
+    <updated>2015-04-24T10:53:02.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="用户行为">用户行为</h2>
+<ul>
+<li>用户使用手机拍摄照片</li>
+<li>用户下载网页上的照片，网盘的照片，微博的照片到手机</li>
+<li>用户导入照片到SD卡</li>
+</ul>
+<h2 id="需求">需求</h2>
+<ul>
+<li>当用户发生上述行为的时候，将增加的照片导入到程序并上传</li>
+</ul>
+<h2 id="实现思路">实现思路</h2>
+<h3 id="监听相机应用">监听相机应用</h3>
+<p>如果用户拍摄了照片，可能会触发一个Intent，发送广播通知给其他程序</p>
+<h4 id="public_static_final_String_ACTION_NEW_PICTURE">public static final String ACTION_NEW_PICTURE</h4>
+<p>Added in API level 14</p>
+<p>Broadcast Action: A new picture is taken by the camera, and the entry of the picture has been added to the media store. getData() is URI of the picture.</p>
+<p>Constant Value: “android.hardware.action.NEW_PICTURE”</p>
+<blockquote>
+<p>public static final String ACTION_NEW_VIDEO</p>
+<p>Added in API level 14</p>
+<p>Broadcast Action: A new video is recorded by the camera, and the entry of the</p>
+<p>video has been added to the media store. getData() is URI of the video.</p>
+<p>Constant Value: “android.hardware.action.NEW_VIDEO”</p>
+</blockquote>
+<h4 id="代码">代码</h4>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CameraEventReciver</span> <span class="keyword">extends</span> <span class="title">BroadcastReceiver</span> </span>{
 
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<span class="annotation">@Override</span>
+<span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceive</span>(Context context, Intent intent) {
+    Cursor cursor = context.getContentResolver().query(intent.getData(),<span class="keyword">null</span>,<span class="keyword">null</span>, <span class="keyword">null</span>, <span class="keyword">null</span>);
+    cursor.moveToFirst();
+    String image_path = cursor.getString(cursor.getColumnIndex(<span class="string">"_data"</span>));
+    Toast.makeText(context, <span class="string">"New Photo is Saved as : -"</span> + image_path, <span class="number">1000</span>).show();
+  }
+}
+</code></pre><hr>
+<pre><code> <span class="tag">&lt;<span class="title">receiver
+</span>        <span class="attribute">android:name</span>=<span class="value">"sample.grass.category.mediastore.CameraEventReciver"</span>
+        <span class="attribute">android:enabled</span>=<span class="value">"true"</span>
+        <span class="attribute">android:exported</span>=<span class="value">"true"</span> &gt;</span>
+        <span class="tag">&lt;<span class="title">intent-filter</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">action</span> <span class="attribute">android:name</span>=<span class="value">"android.hardware.action.NEW_PICTURE"</span> /&gt;</span>
+            <span class="tag">&lt;<span class="title">category</span> <span class="attribute">android:name</span>=<span class="value">"android.intent.category.DEFAULT"</span> /&gt;</span>
+            <span class="tag">&lt;<span class="title">data</span> <span class="attribute">android:mimeType</span>=<span class="value">"image/*"</span> /&gt;</span>
 
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+        <span class="tag">&lt;/<span class="title">intent-filter</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">receiver</span>&gt;</span>
+</code></pre><p> <strong>测试结果：</strong><br> 能够监听到用户拍摄了照片，但是仅限于系统相机，使用其他的相机apk可能收到广播，也有可能收不到</p>
+<h4 id="优点">优点</h4>
+<ul>
+<li>即使应用程序没有启动，也能接收到通知，从而被唤醒</li>
+</ul>
+<h4 id="缺点">缺点</h4>
+<ul>
+<li>有的相机应用并没有实现发送广播，不是完全可以被依赖</li>
+<li>无法监测用户下载图片或者导入照片</li>
+</ul>
+<h3 id="监听Meida数据库">监听Meida数据库</h3>
+<p>无论是用户使用哪个相机拍摄照片，还是用户导入图片到sd卡，还是用户下载照片到手机，都会引起Media 数据库的变化，监听这个变化，导入照片到Trunx</p>
+<h4 id="代码-1">代码</h4>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">UriObserver</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">ContentObserver</span> </span>{
+    <span class="keyword">public</span> UriObserver(Handler handler) {
+        <span class="keyword">super</span>(handler);
+        <span class="comment">// TODO Auto-generated constructor stub</span>
+    }
 
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
+    @Override
+    <span class="keyword">public</span> <span class="keyword">void</span> onChange(<span class="keyword">boolean</span> selfChange) {
+        <span class="comment">// TODO Auto-generated method stub</span>
+        <span class="keyword">super</span>.onChange(selfChange);
 
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        Log.d(<span class="string">"INSTANT"</span>, <span class="string">"GETTING CHANGES"</span>);
+    }
+}
+</code></pre><hr>
+<pre><code>UriObserver observer = <span class="keyword">new</span> UriObserver(<span class="keyword">new</span> Handler());
+<span class="keyword">this</span>.getApplicationContext()
+    .getContentResolver()
+    .registerContentObserver(
+    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, <span class="literal">false</span>,
+    observer);
+</code></pre><h4 id="优点-1">优点</h4>
+<ul>
+<li>可以监听用户导入图片，用户下载图片，用户使用各种第三方相机拍摄图片</li>
+</ul>
+<h4 id="缺点-1">缺点</h4>
+<ul>
+<li>依赖于程序被启动，如果程序被杀掉了,就无法监听了</li>
+</ul>
+<h3 id="监听文件目录">监听文件目录</h3>
+<h4 id="代码-2">代码</h4>
+<pre><code>FileObserver observer = new FileObserver(android.os.Environment.getExternalStorageDirectory().toString() + "/DCIM/100MEDIA") { // <span class="operator"><span class="keyword">set</span> up a file observer <span class="keyword">to</span> watch this directory <span class="keyword">on</span> sd card
+                @Override
+            <span class="keyword">public</span> void onEvent(<span class="built_in">int</span> <span class="keyword">event</span>, <span class="keyword">String</span> file) {
+                <span class="keyword">if</span>(<span class="keyword">event</span> == FileObserver.<span class="keyword">CREATE</span> &amp;&amp; !file.equals(<span class="string">".probe"</span>)){ // <span class="keyword">check</span> <span class="keyword">if</span> its a <span class="string">"create"</span> <span class="keyword">and</span> <span class="keyword">not</span> equal <span class="keyword">to</span> .probe because thats created every <span class="keyword">time</span> camera <span class="keyword">is</span> launched
+                    <span class="keyword">Log</span>.d(TAG, <span class="string">"File created ["</span> + android.os.Environment.getExternalStorageDirectory().toString() + <span class="string">"/DCIM/100MEDIA/"</span> + file + <span class="string">"]"</span>);</span>
+                    fileSaved = "New photo Saved: " + file;
+                }
+            }
+        };
+observer.startWatching(); // <span class="operator"><span class="keyword">start</span> the observer</span>
+</code></pre><h4 id="优点-2">优点</h4>
+<ul>
+<li>能够监听到上述的所有的用户行为</li>
+</ul>
+<h4 id="缺点-2">缺点</h4>
+<ul>
+<li>需要硬编码，并且监听的目录太多，事倍功半</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://stackoverflow.com/questions/4571461/broadcast-receiver-wont-receive-camera-event/4588363#4588363" target="_blank" rel="external">broadcast receiver wont receive camera event</a></li>
+<li><a href="http://stackoverflow.com/questions/3015448/where-is-android-camera-new-picture-defined" target="_blank" rel="external">where is android.camera.NEW_PICTURE defined?</a></li>
+<li><a href="http://developer.android.com/reference/android/hardware/Camera.html#ACTION_NEW_PICTURE" target="_blank" rel="external">Camera</a></li>
+</ul>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io]]>
+    <![CDATA[<h2 id="用户行为">用户行为</h2>
+<ul>
+<li>用户使用手机拍摄照片</li>
+<li>用户下载网页上的照片，网盘的照片，微博的照片到手机</li>
+<li>用户导入照片到SD卡</li>
+</ul>
+<h2 id="需求">需求</h2>
+<ul>
+<li>当]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[LinkedHashMap]]></title>
+    <link href="http://yoursite.com/2015/04/16/LinkedHashMap/"/>
+    <id>http://yoursite.com/2015/04/16/LinkedHashMap/</id>
+    <published>2015-04-16T04:59:33.000Z</published>
+    <updated>2015-04-16T04:59:33.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="LinkedHashMap和HashMap的区别">LinkedHashMap和HashMap的区别</h3>
+<ul>
+<li>Iterator遍历元素是没有次序的，而LinkedHashMap是根据插入顺序来遍历数据的，也就是说HashMap不能保证迭代顺序，而LinkedHashMap可以</li>
+<li>HashMap是单向链表，LinkedHashMap是双向链表，HashMap的单项链表指的是同一个hashcode的元素发生碰撞之后，HashMap将他们存放在同一个index位置，但是这些hashcode相同的元素之间建立单向链表关系，而LinkedHashMap指的是数组元素之间建立双向链表关系，同样hashcode的元素之间建立单向链表关系</li>
+<li></li>
+</ul>
+<h3 id="为什么使用LinkedHashMap来作为LruCache的基础实现?">为什么使用LinkedHashMap来作为LruCache的基础实现?</h3>
+<ul>
+<li><p><strong>LruCache必须具备如下几个要求：</strong></p>
+<ul>
+<li>查询速度快</li>
+<li>删除和添加元素也要快</li>
+<li>访问元素之后，就要将这个元素放置在队列的头部，put元素也要放在头部，这样就会形成一个根据访问顺序排列的队列</li>
+<li>LruCache填满的时候，最近添加和访问的元素不能删除，已经很久没有访问的元素应该被删除掉，也就是LruCache必须有一个机制，来记录元素的访问和添加的顺序。</li>
+</ul>
+<hr>
+<p>  <strong>以上三个要求正是LinkedHashMap具备的</strong></p>
+<ul>
+<li>LinkedHashMap使用hash表来存储元素，访问元素的速度一般来讲为O(1), LinkedHashMap将Key的hashcode转换为底层数组的索引，直接从数组中读取元素</li>
+<li>LinkedHashMap不但是个数组，还是一个双向的链表，我们知道链表的添加和删除的时间复杂度都是O(1)</li>
+<li>LinkedHashMap能够维持元素的插入顺序或者访问顺序，可以自定义，默认为插入顺序，在LinkedHashMap中，put，get，putAll操作元素的时候，就将元素移动到链表的头部，当删除元素的时候，直接从链表的末尾移除即可。</li>
+</ul>
+</li>
+</ul>
+<h3 id="为什么LinkedHashMap要使用双向链表">为什么LinkedHashMap要使用双向链表</h3>
+<ul>
+<li>使用双向链表，可以从链表的头部访问元素，添加新元素，从末尾开始删除最老的元素</li>
+</ul>
+<h3 id="LinkedHashMap的存储结构图">LinkedHashMap的存储结构图</h3>
+<p><a href="http://www.cnblogs.com/children/archive/2012/10/02/2710624.html" target="_blank" rel="external">参考文章</a></p>
+<p><strong>LinkedHashMap使用一个header节点实现了双向链表一遍具有的header节点和tail节点。</strong></p>
+<h3 id="removeEldestEntry">removeEldestEntry</h3>
+<h3 id="put添加一个元素的时候，如果达到了LinkedHashMap的最大容量，是如何删除最老元素的">put添加一个元素的时候，如果达到了LinkedHashMap的最大容量，是如何删除最老元素的</h3>
+<pre><code><span class="input"><span class="prompt">// 删除最近最少使用元素的策略定义  
+Entry&lt;K,V&gt;</span> eldest = header.after;  
+if (removeEldestEntry(eldest)) {  
+    removeEntryForKey(eldest.key);  
+} </span>
+</code></pre><hr>
+<pre><code><span class="comment">// 重写这个方法，定义自己的删除策略</span>
+<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_ENTRIES = <span class="number">100</span>;  
+<span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">removeEldestEntry</span>(Map.Entry eldest) {  
+    <span class="keyword">return</span> size() &gt; MAX_ENTRIES;  
+} 
+</code></pre><blockquote>
+<p>LruCache是怎么处理的呢？首先将元素添加到queue的头部，然后计算是否超过了maxsize，如果超过了，调用trimSize方法，从尾部开始删除程序，直到小于maxsize，具体的可以参看LruCache的<strong>put()</strong>，和<strong>trimSize()</strong>函数。</p>
+</blockquote>
+<h3 id="LruCache动态的更改最大容量">LruCache动态的更改最大容量</h3>
+<ul>
+<li>LruCache提供了一个函数<strong>resize(int maxSize)</strong> 来动态的改变cache的最大容量，这样程序开发的时候可以非常充分的利用最大剩余内存。</li>
+</ul>
+<h3 id="LruCache要加锁来保证同步">LruCache要加锁来保证同步</h3>
+<h3 id="仔细看完LruCache的所有代码，看看是不是还有其他的问题">仔细看完LruCache的所有代码，看看是不是还有其他的问题</h3>
+<h3 id="自己使用HashMap自定义一个LruCache，看看有甚么问题">自己使用HashMap自定义一个LruCache，看看有甚么问题</h3>
+<h3 id="参考文章">参考文章</h3>
+<ul>
+<li><a href="http://zhangshixi.iteye.com/blog/673789" target="_blank" rel="external">深入Java集合学习系列：LinkedHashMap的实现原理</a></li>
+<li><a href="http://zhangshixi.iteye.com/blog/672697#comments" target="_blank" rel="external">深入Java集合学习系列：HashMap的实现原理 </a></li>
+<li><a href="http://www.cnblogs.com/children/archive/2012/10/02/2710624.html" target="_blank" rel="external">理解LinkedHashMap</a></li>
+<li><a href="http://stackvoid.com/implementation-of-LinkedHashMap-and-LRU-implementation/" target="_blank" rel="external">LinkedHashMap源码分析与LRU实现(非常好)</a></li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="LinkedHashMap和HashMap的区别">LinkedHashMap和HashMap的区别</h3>
+<ul>
+<li>Iterator遍历元素是没有次序的，而LinkedHashMap是根据插入顺序来遍历数据的，也就是说HashMap不能保证迭代顺序，]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[HashMap]]></title>
+    <link href="http://yoursite.com/2015/04/16/Hashmap/"/>
+    <id>http://yoursite.com/2015/04/16/Hashmap/</id>
+    <published>2015-04-16T04:59:21.000Z</published>
+    <updated>2015-04-16T04:59:21.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="put一个元素的流程">put一个元素的流程</h3>
+<p>当程序试图将一个key-value对放入HashMap中时，程序首先根据该 key 的 hashCode() 返回值决定该 Entry 的存储位置：如果两个 Entry 的 key 的 hashCode() 返回值相同，那它们的存储位置相同。如果这两个 Entry 的 key 通过 equals 比较返回 true，新添加 Entry 的 value 将覆盖集合中原有 Entry 的 value，但key不会覆盖。如果这两个 Entry 的 key 通过 equals 比较返回 false，新添加的 Entry 将与集合中原有 Entry 形成 Entry 链，而且新添加的 Entry 位于 Entry 链的头部——具体说明继续看 addEntry() 方法的说明。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="put一个元素的流程">put一个元素的流程</h3>
+<p>当程序试图将一个key-value对放入HashMap中时，程序首先根据该 key 的 hashCode() 返回值决定该 Entry 的存储位置：如果两个 Entry 的 key 的 hashCode]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[SubsamplingScaleImageView(一)UI分析]]></title>
+    <link href="http://yoursite.com/2015/04/16/SubsamplingScaleImageView(%E4%B8%80)UI%E5%88%86%E6%9E%90/"/>
+    <id>http://yoursite.com/2015/04/16/SubsamplingScaleImageView(一)UI分析/</id>
+    <published>2015-04-16T04:53:56.000Z</published>
+    <updated>2015-04-16T04:53:56.000Z</updated>
+    <content type="html"><![CDATA[<blockquote>
+<p>文章还在修改中</p>
+</blockquote>
+<h2 id="onMeasure方法分析">onMeasure方法分析</h2>
+<p>对于一个View来说，第一怎么重写自己的onMeasure方法，只取决于自己的功能是什么。第二view可以有各种各样的parent view，可以被嵌套在各种各样的视图体系结构里，View必须在onMeauser方法中对于这些变化提供支持。</p>
+<p>view在measure过程中想要确认自己的height和width，取决于两方面的因素，自己想要显示多大和自己能显示多大。view的LayoutParams代表了view想要显示多大，自己能显示多大是由父容器决定的。也就是说自身的layoutparams和父容器的限制决定了view的实际height和width。</p>
+<p>总结一下，view的大小决定于parent传递过来的<strong>MeasureSpec</strong>的要求。</p>
+<h3 id="MeasureSpec分析">MeasureSpec分析</h3>
+<p><strong>MeasureSpec的值由specSize和specMode共同组成的，其中specSize记录的是大小，specMode记录的是规格。specMode一共有三种类型，如下所示：</strong></p>
+<h4 id="EXACTLY">EXACTLY</h4>
+<blockquote>
+<p>The parent has determined an exact size for the child. The child is going to be given those bounds regardless of how big it wants to be.</p>
+<p>表示父视图希望子视图的大小应该是由specSize的值来决定的，系统默认会按照这个规则来设置子视图的大小，开发人员当然也可以按照自己的意愿设置成任意的大小。</p>
+</blockquote>
+<h4 id="AT_MOST">AT_MOST</h4>
+<blockquote>
+<p>The child can be as large as it wants up to the specified size.</p>
+<p>表示子视图最多只能是specSize中指定的大小，开发人员应该尽可能小得去设置这个视图，并且保证不会超过specSize。系统默认会按照这个规则来设置子视图的大小，开发人员当然也可以按照自己的意愿设置成任意的大小。</p>
+<p>MeasureSpec.AT_MOST will be applied to views that have been set to WRAP_CONTENT if the parent view is bound in size. For example, your parent View might be bound to the screen size. It’s children will be also bound to this size, but it might not be that big. Thus, the parent view will set the MeasureSpec to be AT_MOST which tells the child that it can be anywhere between 0 and screen size. The child will have to make adjustments to ensure that it fits within the bounds that was provided.</p>
+</blockquote>
+<h4 id="UNSPECIFIED">UNSPECIFIED</h4>
+<blockquote>
+<p>The parent has not imposed any constraint on the child. It can be whatever size it wants.</p>
+<p>表示开发人员可以将视图按照自己的意愿设置成任意的大小，没有任何限制。这种情况比较少见，不太会用到。</p>
+</blockquote>
+<h3 id="参数widthMeasureSpec,_heightMeasureSpec是怎么来的？">参数widthMeasureSpec, heightMeasureSpec是怎么来的？</h3>
+<p>view的parent容器结合自己的大小和layout中view的布局参数，生成了这个值，传递给view。</p>
+<pre><code>源码来自：ViewGroup: getChildMeasureSpec:
+
+ <span class="comment">/**
+ * Does the hard part of measureChildren: figuring out the MeasureSpec to
+ * pass to a particular child. This method figures out the right MeasureSpec
+ * for one dimension (height or width) of one child view.
+ *
+ * The goal is to combine information from our MeasureSpec with the
+ * LayoutParams of the child to get the best possible results. For example,
+ * if the this view knows its size (because its MeasureSpec has a mode of
+ * EXACTLY), and the child has indicated in its LayoutParams that it wants
+ * to be the same size as the parent, the parent should ask the child to
+ * layout given an exact size.
+ *
+ * @param spec The requirements for this view
+ * @param padding The padding of this view for the current dimension and
+ *        margins, if applicable
+ * @param childDimension How big the child wants to be in the current
+ *        dimension
+ * @return a MeasureSpec integer for the child
+ */</span>
+<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> getChildMeasureSpec(<span class="keyword">int</span> spec, <span class="keyword">int</span> padding, <span class="keyword">int</span> childDimension) {
+    <span class="keyword">int</span> specMode = MeasureSpec.getMode(spec);
+    <span class="keyword">int</span> specSize = MeasureSpec.getSize(spec);
+    <span class="keyword">int</span> <span class="keyword">size</span> = Math.max(<span class="number">0</span>, specSize - padding);
+    <span class="keyword">int</span> resultSize = <span class="number">0</span>;
+    <span class="keyword">int</span> resultMode = <span class="number">0</span>;
+    <span class="keyword">switch</span> (specMode) {
+    <span class="comment">// Parent has imposed an exact size on us</span>
+    <span class="keyword">case</span> MeasureSpec.EXACTLY:
+        <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) {
+            resultSize = childDimension;
+            resultMode = MeasureSpec.EXACTLY;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) {
+            <span class="comment">// Child wants to be our size. So be it.</span>
+            resultSize = <span class="keyword">size</span>;
+            resultMode = MeasureSpec.EXACTLY;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) {
+            <span class="comment">// Child wants to determine its own size. It can't be</span>
+            <span class="comment">// bigger than us.</span>
+            resultSize = <span class="keyword">size</span>;
+            resultMode = MeasureSpec.AT_MOST;
+        }
+        <span class="keyword">break</span>;
+
+    <span class="comment">// Parent has imposed a maximum size on us</span>
+    <span class="keyword">case</span> MeasureSpec.AT_MOST:
+        <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) {
+            <span class="comment">// Child wants a specific size... so be it</span>
+            resultSize = childDimension;
+            resultMode = MeasureSpec.EXACTLY;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) {
+            <span class="comment">// Child wants to be our size, but our size is not fixed.</span>
+            <span class="comment">// Constrain child to not be bigger than us.</span>
+            resultSize = <span class="keyword">size</span>;
+            resultMode = MeasureSpec.AT_MOST;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) {
+            <span class="comment">// Child wants to determine its own size. It can't be</span>
+            <span class="comment">// bigger than us.</span>
+            resultSize = <span class="keyword">size</span>;
+            resultMode = MeasureSpec.AT_MOST;
+        }
+        <span class="keyword">break</span>;
+
+    <span class="comment">// Parent asked to see how big we want to be</span>
+    <span class="keyword">case</span> MeasureSpec.UNSPECIFIED:
+        <span class="keyword">if</span> (childDimension &gt;= <span class="number">0</span>) {
+            <span class="comment">// Child wants a specific size... let him have it</span>
+            resultSize = childDimension;
+            resultMode = MeasureSpec.EXACTLY;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.MATCH_PARENT) {
+            <span class="comment">// Child wants to be our size... find out how big it should</span>
+            <span class="comment">// be</span>
+            resultSize = <span class="number">0</span>;
+            resultMode = MeasureSpec.UNSPECIFIED;
+        } <span class="keyword">else</span> <span class="keyword">if</span> (childDimension == LayoutParams.WRAP_CONTENT) {
+            <span class="comment">// Child wants to determine its own size.... find out how</span>
+            <span class="comment">// big it should be</span>
+            resultSize = <span class="number">0</span>;
+            resultMode = MeasureSpec.UNSPECIFIED;
+        }
+        <span class="keyword">break</span>;
+    }
+    <span class="keyword">return</span> MeasureSpec.makeMeasureSpec(resultSize, resultMode);
+}
+</code></pre><h4 id="getChildMeasureSpec的实现逻辑：">getChildMeasureSpec的实现逻辑：</h4>
+<p>例如测量的是childView的宽度：</p>
+<ul>
+<li><p>Parent自身是MeasureSpec.EXACTLY的，也就是说parent有一个固定大小。</p>
+<ul>
+<li>如果child的params.width是一个具体的值，那么就用这个固定值，mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.MATCH_PARENT，那么child的width就是parent的width,mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.WRAP_CONTENT，那么child的width就取决于自己了，只要不大于parent的width就可以了,mode为AT_MOST.</li>
+</ul>
+</li>
+<li><p>Parent自身是MeasureSpec.AT_MOST，也就是说parent的width取决于本身内容的with</p>
+<ul>
+<li>如果child的params.width是一个具体的值，那么就用这个固定值,mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.MATCH_PARENT,但是这个时候并不知道parent的具体大小，parent还取决于child的width呢，所以这个时候mode为AT_MOST</li>
+<li>如果child的params.width是LayoutParams.WRAP_CONTENT，那么child的width就取决于自己了，只要不大于parent的width就可以了,mode为AT_MOST.</li>
+</ul>
+</li>
+<li><p>Parent自身是MeasureSpec.UNSPECIFIED的，childView想是多大就多大，和AT_MOST有一些区别，AT_MOST模式下，childview的大小取决于自己的内容，但是会受到parent的限制，不能超过parent给定的边界，而在UNSPECIFIED模式下，就没有这个边界限制了，例如ScollView中能够承载远远大于屏幕尺寸的内容。</p>
+<ul>
+<li>如果child的params.width是一个具体的值，那么就用这个固定值,mode为EXACTLY</li>
+<li>如果child的params.width是LayoutParams.MATCH_PARENT,但是这个时候parent并没有具体的大小，只能是childView想多大就多大了，所以childView的size为0，mode为UNSPECIFIED</li>
+<li>如果child的params.width是LayoutParams.WRAP_CONTENT，那么child的width就取决于自己了，想多大就多大，所以childView的size为0，mode为UNSPECIFIED</li>
+</ul>
+</li>
+</ul>
+<h2 id="SubsamplingScaleImageView的实现逻辑">SubsamplingScaleImageView的实现逻辑</h2>
+<pre><code>    <span class="javadoc">/**
+     * Measures the width and height of the view, preserving the aspect ratio of the image displayed if wrap_content is
+     * used. The image will scale within this box, not resizing the view as it is zoomed.
+     */</span>
+    <span class="annotation">@Override</span>
+    <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span>(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec) {
+        <span class="keyword">int</span> widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+        <span class="keyword">int</span> heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+        <span class="keyword">int</span> parentWidth = MeasureSpec.getSize(widthMeasureSpec);
+        <span class="keyword">int</span> parentHeight = MeasureSpec.getSize(heightMeasureSpec);
+        <span class="keyword">boolean</span> resizeWidth = widthSpecMode != MeasureSpec.EXACTLY;
+        <span class="keyword">boolean</span> resizeHeight = heightSpecMode != MeasureSpec.EXACTLY;
+        <span class="keyword">int</span> width = parentWidth;
+        <span class="keyword">int</span> height = parentHeight;
+        <span class="keyword">if</span> (sWidth &gt; <span class="number">0</span> &amp;&amp; sHeight &gt; <span class="number">0</span>) {
+            <span class="keyword">if</span> (resizeWidth &amp;&amp; resizeHeight) {
+                width = sWidth();
+                height = sHeight();
+            } <span class="keyword">else</span> <span class="keyword">if</span> (resizeHeight) {
+                height = (<span class="keyword">int</span>)((((<span class="keyword">double</span>)sHeight()/(<span class="keyword">double</span>)sWidth()) * width));
+            } <span class="keyword">else</span> <span class="keyword">if</span> (resizeWidth) {
+                width = (<span class="keyword">int</span>)((((<span class="keyword">double</span>)sWidth()/(<span class="keyword">double</span>)sHeight()) * height));
+            }
+        }
+        Log.i(<span class="string">"grass"</span>, <span class="string">"width: "</span> + width + <span class="string">" height: "</span> + height+<span class="string">" parentWidth: "</span>+parentWidth+<span class="string">" parentHeight: "</span>+parentHeight);
+        width = Math.max(width, getSuggestedMinimumWidth());
+        height = Math.max(height, getSuggestedMinimumHeight());
+        setMeasuredDimension(width, height);
+    }
+</code></pre><hr>
+<pre><code>FrameLayout xmlns:<span class="variable">android=</span><span class="string">"http://schemas.android.com/apk/res/android"</span>
+    android:<span class="variable">layout_width=</span><span class="string">"fill_parent"</span>
+    android:<span class="variable">layout_height=</span><span class="string">"fill_parent"</span> &gt;
+
+    &lt;me.trunx.ui.deepzoom.SubsamplingScaleImageView
+        android:<span class="variable">id=</span><span class="string">"@+id/imageView"</span>
+        android:<span class="variable">layout_width=</span><span class="string">"fill_parent"</span>
+        android:<span class="variable">layout_height=</span><span class="string">"fill_parent"</span>
+        android:<span class="variable">contentDescription=</span><span class="string">"Image Thumbnail"</span> 
+        /&gt;
+</code></pre><hr>
+<h3 id="逻辑">逻辑</h3>
+<ul>
+<li>保持图片的ratio不变，以某一边为基准，重新计算另一边即可，确保某一边充满了屏幕。例如图片横向充满屏幕，纵向可以上下滚动</li>
+<li>SubsamplingScaleImageView可以按照图片的实际大小进行显示</li>
+</ul>
+<h3 id="问题">问题</h3>
+<p>SubsamplingScaleImageView在layout中的width和height都是matchParent，并且他的parent的布局也是matchParent,问题来了，为什么都是matchParent，但是在SubsamplingScaleImageView类的onMeasure方法中得到的mode为MeasureSpec.EXACTLY？</p>
+<p>通过上面的<strong>getChildMeasureSpec</strong>的代码分析，可以知道，有三种情况下，child的MeasureSpec的mode可以为MeasureSpec.EXACTLY，size为具体值。</p>
+<ul>
+<li><p>parent的measure mode是MeasureSpec.EXACTLY的，并且child的width和height的layout参数设置为matchParent,或者具体的值的情况下，child的onMeasure方法中接收到的MeasureSpec的mode才会是MeasureSpec.EXACTLY</p>
+</li>
+<li><p>parent的measure mode是Parent自身是MeasureSpec.AT_MOST，但是child view的layout参数是具体值，这个时候也可以使用这个size值，只要size不大于parent的width</p>
+</li>
+<li><p>parent的measure mode是Parent自身是MeasureSpec.UNSPECIFIED，但是child view的layout参数是具体值，这个时候也可以使用这个size值</p>
+</li>
+</ul>
+<p>代码中设置了SubsamplingScaleImageView的layout参数是matchParent，满足第一种情况，也就是parent的mode是MeasureSpec.EXACTLY。</p>
+<p><strong>写个测试用例会更直观一点：</strong></p>
+<ul>
+<li>创建一个DeepZoomActivity</li>
+<li>设置SubsamplingScaleImageView的width和height为matchParent</li>
+<li>设置SubsamplingScaleImageView为content view</li>
+<li>在SubsamplingScaleImageView中打印出MeasureSpec</li>
+</ul>
+<p><strong>结果是width和height的mode都是MeasureSpec.EXACTLY，这就证明了activity的root content view的mode是MeasureSpec.EXACTLY</strong></p>
+<h3 id="总结">总结</h3>
+<ul>
+<li>activity的root content view的mode是MeasureSpec.EXACTLY </li>
+<li>parent的measure mode是MeasureSpec.EXACTLY的，并且child的width和height的layout参数设置为matchParent,child的onMeasure方法中接收到的MeasureSpec的mode是MeasureSpec.EXACTLY</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<blockquote>
+<p>文章还在修改中</p>
+</blockquote>
+<h2 id="onMeasure方法分析">onMeasure方法分析</h2>
+<p>对于一个View来说，第一怎么重写自己的onMeasure方法，只取决于自己的功能是什么。第二view可以]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[subsampling-scale-image-view源码分析]]></title>
+    <link href="http://yoursite.com/2015/04/16/subsampling-scale-image-view/"/>
+    <id>http://yoursite.com/2015/04/16/subsampling-scale-image-view/</id>
+    <published>2015-04-16T04:43:07.000Z</published>
+    <updated>2015-04-16T04:47:18.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="前言">前言</h2>
+<ul>
+<li><a href="https://github.com/davemorrissey/subsampling-scale-image-view" target="_blank" rel="external">代码仓库地址</a></li>
+</ul>
+<p>在Android平台，用户再查看图片的时候，都有放大缩小图片的需求，放大的主要目的是观察图片的细节。Android提供了ImageView作为展示图片的官方控件，很遗憾，ImageView无法实现这个效果，有人说了，可以通过Matrix矩阵来实现啊，确实通过Matrix可以实现图片的放大或者缩小，但是ImageView完全加载一张大图片的内存代价是惊人的，这种实现方式很容易爆掉内存，最好的做法就是只加载屏幕显示的那部分内容，用户看什么就显示什么，类似于百度地图。</p>
+<p>有没有现成的库可以使用呢？github上还真有很多实现了这个功能的库，个人认为SubSamplingScaleImageView是其中最简单，最好用的一个类库了。作者还在持续改进，重构代码，使之更加好用。</p>
+<h2 id="要点">要点</h2>
+<ul>
+<li>实现View，重写measure，layout，draw过程</li>
+<li>将整个Bitmap分割成很多方块</li>
+<li>使用BitmapRegionDecoder来区间加载这些小的Bitmap，铺满整个屏幕</li>
+<li>以屏幕的左上角为原点，用户移动的时候，控制图片的Translate,映射Bitmap内容到屏幕上去</li>
+</ul>
+<h2 id="目录">目录</h2>
+<ul>
+<li><p>UI实现</p>
+</li>
+<li><p>加载图片细节的实现逻辑</p>
+</li>
+<li><p>实现首先显示缩略图，然后加载原图</p>
+</li>
+<li><p>实现多指放大，动态的加载原图</p>
+</li>
+<li><p>图片超过屏幕大小的时候，移动图片</p>
+</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="前言">前言</h2>
+<ul>
+<li><a href="https://github.com/davemorrissey/subsampling-scale-image-view" target="_blank" rel="external">代码仓库地址</]]>
     </summary>
     
   </entry>
