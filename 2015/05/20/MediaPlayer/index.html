@@ -1,0 +1,326 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh_cn">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>MediaPlayer总结 | idealGrass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="grass">
+    
+    <meta name="description" content="Asynchronous Preparation
+Using MediaPlayer can be straightforward in principle. However, it’s important to keep in mind that a few more things are nec">
+    
+    
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+</head>
+
+  <body>
+    <header>
+      <div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="idealGrass" title="idealGrass"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="idealGrass">idealGrass</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/atom.xml">Rss</a></li>
+					
+						<li><a href="/sitemap.xml">Sitemap</a></li>
+					
+					<li>
+					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="text" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/05/20/MediaPlayer/" title="MediaPlayer总结" itemprop="url">MediaPlayer总结</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://yoursite.com" title="grass">grass</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2015-05-20T03:20:30.000Z" itemprop="datePublished">5月 20 2015</time>
+    Updated:<time datetime="2015-05-21T01:56:56.000Z" itemprop="dateModified">5月 21 2015</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Asynchronous_Preparation"><span class="toc-number">1.</span> <span class="toc-text">Asynchronous Preparation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Managing_State"><span class="toc-number">2.</span> <span class="toc-text">Managing State</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Releasing_the_MediaPlayer"><span class="toc-number">3.</span> <span class="toc-text">Releasing the MediaPlayer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#翻译"><span class="toc-number"></span> <span class="toc-text">翻译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#异步准备资源"><span class="toc-number">1.</span> <span class="toc-text">异步准备资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#管理好状态"><span class="toc-number">2.</span> <span class="toc-text">管理好状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#释放MediaPlayer"><span class="toc-number">3.</span> <span class="toc-text">释放MediaPlayer</span></a></li></ol>
+		</div>
+		
+		<h3 id="Asynchronous_Preparation">Asynchronous Preparation</h3>
+<p>Using MediaPlayer can be straightforward in principle. However, it’s important to keep in mind that a few more things are necessary to integrate it correctly with a typical Android application. For example, the call to prepare() can take a long time to execute, because it might involve fetching and decoding media data. So, as is the case with any method that may take long to execute, you should never call it from your application’s UI thread. Doing that will cause the UI to hang until the method returns, which is a very bad user experience and can cause an ANR (Application Not Responding) error. Even if you expect your resource to load quickly, remember that anything that takes more than a tenth of a second to respond in the UI will cause a noticeable pause and will give the user the impression that your application is slow.</p>
+<p>To avoid hanging your UI thread, spawn another thread to prepare the MediaPlayer and notify the main thread when done. However, while you could write the threading logic yourself, this pattern is so common when using MediaPlayer that the framework supplies a convenient way to accomplish this task by using the prepareAsync() method. This method starts preparing the media in the background and returns immediately. When the media is done preparing, the onPrepared() method of the MediaPlayer.OnPreparedListener, configured through setOnPreparedListener() is called.</p>
+<h3 id="Managing_State">Managing State</h3>
+<p>Another aspect of a MediaPlayer that you should keep in mind is that it’s state-based. That is, the MediaPlayer has an internal state that you must always be aware of when writing your code, because certain operations are only valid when then player is in specific states. If you perform an operation while in the wrong state, the system may throw an exception or cause other undesireable behaviors.</p>
+<p>The documentation in the MediaPlayer class shows a complete state diagram, that clarifies which methods move the MediaPlayer from one state to another. For example, when you create a new MediaPlayer, it is in the Idle state. At that point, you should initialize it by calling setDataSource(), bringing it to the Initialized state. After that, you have to prepare it using either the prepare() or prepareAsync() method. When the MediaPlayer is done preparing, it will then enter the Prepared state, which means you can call start() to make it play the media. At that point, as the diagram illustrates, you can move between the Started, Paused and PlaybackCompleted states by calling such methods as start(), pause(), and seekTo(), amongst others. When you call stop(), however, notice that you cannot call start() again until you prepare the MediaPlayer again.</p>
+<p>Always keep the state diagram in mind when writing code that interacts with a MediaPlayer object, because calling its methods from the wrong state is a common cause of bugs.</p>
+<h3 id="Releasing_the_MediaPlayer">Releasing the MediaPlayer</h3>
+<p>A MediaPlayer can consume valuable system resources. Therefore, you should always take extra precautions to make sure you are not hanging on to a MediaPlayer instance longer than necessary. When you are done with it, you should always call release() to make sure any system resources allocated to it are properly released. For example, if you are using a MediaPlayer and your activity receives a call to onStop(), you must release the MediaPlayer, because it makes little sense to hold on to it while your activity is not interacting with the user (unless you are playing media in the background, which is discussed in the next section). When your activity is resumed or restarted, of course, you need to create a new MediaPlayer and prepare it again before resuming playback.</p>
+<p>Here’s how you should release and then nullify your MediaPlayer:</p>
+<p>mediaPlayer.release();<br>mediaPlayer = null;<br>As an example, consider the problems that could happen if you forgot to release the MediaPlayer when your activity is stopped, but create a new one when the activity starts again. As you may know, when the user changes the screen orientation (or changes the device configuration in another way), the system handles that by restarting the activity (by default), so you might quickly consume all of the system resources as the user rotates the device back and forth between portrait and landscape, because at each orientation change, you create a new MediaPlayer that you never release. (For more information about runtime restarts, see Handling Runtime Changes.)</p>
+<p>You may be wondering what happens if you want to continue playing “background media” even when the user leaves your activity, much in the same way that the built-in Music application behaves. In this case, what you need is a MediaPlayer controlled by a Service, as discussed in Using a Service with MediaPlayer.</p>
+<h2 id="翻译">翻译</h2>
+<h3 id="异步准备资源">异步准备资源</h3>
+<p>使用Mediaplayer播放视频或者音频是非常有效的方式。然而想要完美的使用它来完成你的逻辑你必须要注意以下几点。例如，prepare()方法的执行可能需要耗费很长的时间（需要去获取媒体数据或者是编解码），因此开发者不能在UI线程中调用这个方法。如果在UI线程中调用了这个方法，那么很有可能给用户造成很不好的体验，甚至引发ANR错误。即使你预计你所有加载的资源不会超过10秒，但是仍然会造成卡顿，用户可以很明显的感受到，觉着这个程序怎么运行这么慢啊。</p>
+<p>为了避免UI线程被阻塞，在其他线程中调用prepare方法，然后在方法执行完后通知主线程。Android sdk提供了一种非常简单的方式来解决这个问题，你可以使用prepareAsync()方法，这个方法在其他线程中执行prepare操作，一旦完成，立刻调用MediaPlayer.OnPreparedListener, 来通知主线程我已经准备完毕了，可以播放了。</p>
+<h3 id="管理好状态">管理好状态</h3>
+<p>另外一个开发者必须要多加小心的地方是Medplayer的状态管理。因为一些Medplayer的方法开发者必须在Mediaplayer合适的状态下调用，否则很有可能抛出异常或者未知的错误。</p>
+<p>MediaPlayer的类文档详细的介绍了MediaPlayer的各种状态，某个方法的调用可以导致的MediaPlayer状态变化。例如，当开发者刚刚创建了MediaPlayer，那么这个时候再idle状态。在这个节点，你可以调用<br>setDataSource()方法来进行初始化，将MediaPlayer进入到Initialized状态。接着可以调用prepare() 或者 prepareAsync() 方法，当MediaPlayer完成了prepare操作，MediaPlayer进入到Prepared状态。这也就意味着你可以调用start()方法来播放媒体资源了。根据图表中的展示，这个时候MediaPlayer可以通过调用方法start(), pause(),seekTo()等等在Started，Paused和PlaybackCompleted状态之间进行切换了。<strong>当调用完了stop()方法，你就不能再调用start方法了，直到MediaPlayer重新prepare。</strong></p>
+<p><strong>在写代码的时候，永远心里想着MediaPlayer的各种状态变化，因为大部分的bug都是在某个状态下调用了错误的方法导致的。</strong></p>
+<h3 id="释放MediaPlayer">释放MediaPlayer</h3>
+<p>MediaPlayer占用非常多的宝贵的系统资源，所以你必须确保释放MediaPlayer资源，没有让他不必要的使用系统资源。当不需要MediaPlayer的时候，你必须调用release()方法来确保之前分配给MediaPlayer的资源被释放掉。例如你的Activity收到onStop回调了，你就很有必要来释放掉MediaPlayer了，除非你有特殊的需要。当重新回到前台或者重启了，你可以重新创建一个MediaPlayer，并且prepare他来重新播放了。</p>
+<p>如何释放一个MediaPlayer？</p>
+<pre><code>mediaPlayer.release();
+<span class="variable">mediaPlayer =</span> <span class="constant">null</span>;
+</code></pre><p>举一个简单的例子，假设当你的Activity stop的时候，你没有释放MediaPlayer，而是在Activity start的时候，重新创建了一个新的。或者当用户横竖屏切换手机的时候（没有特殊处理，Activity会重新创建）,如果多旋转几次的话，很快MediaPlayer就占用了系统绝大部分资源，造成运行缓慢，无响应等等。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://yoursite.com/2015/05/20/MediaPlayer/" data-title="MediaPlayer总结 | idealGrass" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/05/20/Preparation/"  title="Preparation">
+ <strong>NEXT:</strong><br/> 
+ <span>Preparation
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Asynchronous_Preparation"><span class="toc-number">1.</span> <span class="toc-text">Asynchronous Preparation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Managing_State"><span class="toc-number">2.</span> <span class="toc-text">Managing State</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Releasing_the_MediaPlayer"><span class="toc-number">3.</span> <span class="toc-text">Releasing the MediaPlayer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#翻译"><span class="toc-number"></span> <span class="toc-text">翻译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#异步准备资源"><span class="toc-number">1.</span> <span class="toc-text">异步准备资源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#管理好状态"><span class="toc-number">2.</span> <span class="toc-text">管理好状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#释放MediaPlayer"><span class="toc-number">3.</span> <span class="toc-text">释放MediaPlayer</span></a></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<div class="social-font clearfix">
+		
+		
+		
+		
+		
+	</div>
+		<p class="copyright">Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/A-limon/pacman" target="_blank" title="Pacman">Pacman</a> © 2015 
+		
+		<a href="http://yoursite.com" target="_blank" title="grass">grass</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+  </body>
+</html>
